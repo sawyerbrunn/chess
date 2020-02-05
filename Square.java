@@ -13,7 +13,7 @@ class Square {
 		i = x;
 		j = y;
 		b = brd;
-		piece = null;
+		piece = new Nopiece(brd);
 		if (x % 2 == 0 && y % 2 == 0) {
 			color = "Dark";
 		} else if (x % 2 == 0 && y % 2 == 1) {
@@ -33,6 +33,10 @@ class Square {
 		return piece;
 	}
 
+	boolean isEmpty() {
+		return piece instanceof Nopiece;
+	}
+
 	void empty() {
 		if (false) {
 
@@ -42,6 +46,14 @@ class Square {
 
 	void put(Piece p) {
 		piece = p;
+	}
+
+	int getx() {
+		return i;
+	}
+
+	int gety() {
+		return j;
 	}
 
 

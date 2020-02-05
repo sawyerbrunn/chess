@@ -59,12 +59,13 @@ class Board {
 				map[i][j] = new Square(i, j, this);
 			}
 		}
-
+		/*
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
 				put(i, j, new Nopiece(this));
 			}
 		}
+		*/
 		placePawns();
 		placeKnights();
 		placeRooks();
@@ -120,6 +121,12 @@ class Board {
 		put(4, 7, new King(get(4, 7), this, "Black"));
 	}
 
+	/* Returns whether or not this move checks TURN's king. Will implement later */
+	boolean noCheck() {
+		System.out.println("Check");
+		return true;
+	}
+
 	/* Places p on square (i, j) */
 	void put(int i, int j, Piece p) {
 		map[i][j].put(p);
@@ -130,6 +137,7 @@ class Board {
 		return map[i][j];
 	}
 
+	/* Switch whose turn it is */
 	void turn() {
 		turn = (turn == "White") ? "Black" : "White";
 	}
@@ -155,6 +163,7 @@ class Board {
 
     }
 
+    /* Returns whose turn it is */
     String getTurn() {
     	return turn;
     }

@@ -17,9 +17,12 @@ class Nopiece extends Piece {
     String color;
 
     Nopiece(Board brd) {
-    	color = null;
+    	color = "None";
     	b = brd;
 
+    }
+    String getColor() {
+        return color;
     }
 
     @Override

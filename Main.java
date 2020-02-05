@@ -45,6 +45,12 @@ class Main {
 			int x2 = getCoord(to.charAt(0));
 			Square s1 = b.get(x1, y1);
 			Square s2 = b.get(x2, y2);
+			if (!s1.getPiece().isLegal(s1, s2)) {
+				System.out.println("Please enter a legal move.");
+			}
+			System.out.println(s2.isEmpty());
+			System.out.println(s2.getPiece().getColor().equals(s1.getPiece().getColor()));
+			System.out.println(s1.getPiece().isLegal(s1, s2));
 			s1.getPiece().move(s1, s2);
 			System.out.println(b.toString());
 		}
