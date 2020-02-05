@@ -56,6 +56,12 @@ class Board {
 		blackpieces = new ArrayList<Piece>();
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
+				map[i][j] = new Square(i, j, this);
+			}
+		}
+
+		for (int i = 0; i < SIZE; i++) {
+			for (int j = 0; j < SIZE; j++) {
 				put(i, j, new Nopiece(this));
 			}
 		}
@@ -105,25 +111,28 @@ class Board {
 	/* Places Queens on the initial board */
 	void placeQueens() {
 		put(3, 0, new Queen(get(3, 0), this, "White"));
-		put(3, 7, new Queen(get(3, 7), this, "White"));
+		put(3, 7, new Queen(get(3, 7), this, "Black"));
 	}
 
 	/* Places Kings on the initial board */
 	void placeKings() {
 		put(4, 0, new King(get(4, 0), this, "White"));
-		put(4, 7, new King(get(4, 7), this, "White"));
+		put(4, 7, new King(get(4, 7), this, "Black"));
 	}
 
 	/* Places p on square (i, j) */
-	private void put(int i, int j, Piece p) {
+	void put(int i, int j, Piece p) {
 		map[i][j].put(p);
 	}
 
 	/* Returns the square (i, j) */
-	private Square get(int i, int j) {
+	Square get(int i, int j) {
 		return map[i][j];
 	}
 
+	void turn() {
+		turn = (turn == "White") ? "Black" : "White";
+	}
 
 
 	@Override
@@ -144,6 +153,10 @@ class Board {
         }
         return r;
 
+    }
+
+    String getTurn() {
+    	return turn;
     }
 
 

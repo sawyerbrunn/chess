@@ -30,13 +30,14 @@ class Pawn extends Piece {
     		to.empty();
     		s = to;
     		s.put(this);
+            b.turn();
             return to;
     	}
         return null;
     }
 
     @Override
-    boolean isLegal(Square from, Square to) { return false;}
+    boolean isLegal(Square from, Square to) { return true;}
 
     @Override
     boolean hasMoved() { return false; }

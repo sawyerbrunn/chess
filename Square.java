@@ -34,10 +34,10 @@ class Square {
 	}
 
 	void empty() {
-		if (piece != null) {
+		if (false) {
 
 		}
-		piece = null;
+		piece = new Nopiece(b);
 	}
 
 	void put(Piece p) {
