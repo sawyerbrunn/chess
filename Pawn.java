@@ -73,8 +73,8 @@ class Pawn extends Piece {
             }
             if (to.gety() - from.gety() > 2 || to.gety() - from.gety() < -2) {
                 System.out.println("Haha");
-                System.out.println(from.gety());
-                System.out.println(to.gety());
+                System.out.println(to.gety() - from.gety() > 2);
+                System.out.println(to.gety() - from.gety() < -2);
                 return false;
             }
             if (from.gety() <= to.gety() && color == "Black") {
