@@ -1,18 +1,50 @@
 package chess;
 
 class King extends Piece {
-	Player player;
-	boolean hasMoved;
-	Board board;
 
+	 /* The name of this piece */
+    String name;
 
-	boolean inCheck() { }
+    /* The squre this piece occupies */
+    Square s;
 
-	boolean inCheckMate() { }
+    /* The board this piece occupies */
+    Board b;
 
-	Square move() { }
+    /* Tracks if I have moved */
+    boolean hasMoved;
 
-	boolean canCastle { }
+    String color;
 
+     /* Creates a new piece on Square sq of Board brd */
+    King(Square sq, Board brd, String col) {
+        s = sq;
+        b = brd;
+        hasMoved = false;
+        color = col;
+    }
+
+    @Override
+    Square move(Square from, Square to) {
+    	if (isLegal(from, to)) {
+    		s.empty();
+    		to.empty();
+    		s = to;
+    		s.put(this);
+            return to;
+    	}
+        return null;
+    }
+
+    @Override
+    boolean isLegal(Square from, Square to) { return false; }
+
+    @Override
+    boolean hasMoved() { return false; }
+
+    @Override
+    String getSymbol() {
+        return (color.equals("White")) ? "WK" : "BK";
+    }
 
 }

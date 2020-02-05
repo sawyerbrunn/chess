@@ -1,6 +1,6 @@
 package chess;
 
-class Rook extends Piece {
+class Nopiece extends Piece {
 
 	 /* The name of this piece */
     String name;
@@ -16,24 +16,15 @@ class Rook extends Piece {
 
     String color;
 
-     /* Creates a new piece on Square sq of Board brd */
-    Rook(Square sq, Board brd, String col) {
-        s = sq;
-        b = brd;
-        hasMoved = false;
-        color = col;
+    Nopiece(Board brd) {
+    	color = null;
+    	b = brd;
+
     }
 
     @Override
     Square move(Square from, Square to) {
-    	if (isLegal(from, to)) {
-    		s.empty();
-    		to.empty();
-    		s = to;
-    		s.put(this);
-            return to;
-    	}
-        return null;
+    	return null;
     }
 
     @Override
@@ -44,6 +35,6 @@ class Rook extends Piece {
 
     @Override
     String getSymbol() {
-        return (color.equals("White")) ? "WR" : "BR";
+        return "--";
     }
 }

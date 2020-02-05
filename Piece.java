@@ -1,5 +1,43 @@
 package chess;
 
+abstract class Piece {
+
+    /* The name of this piece */
+    String name;
+
+    /* The squre this piece occupies */
+    Square s;
+
+    /* The board this piece occupies */
+    Board b;
+
+    /* Tracks if I have moved */
+    boolean hasMoved;
+
+    String color;
+
+    /* Moves me from FROM to TO */
+    abstract Square move(Square from, Square to);
+
+    /* Checks if moving from FROM to TO is allowed. */
+    abstract boolean isLegal(Square from, Square to);
+
+    /* Checks if I've moved */
+    abstract boolean hasMoved();
+
+    abstract String getSymbol();
+
+}
+
+
+
+
+
+
+
+
+
+/* 
 enum Piece {
 
 	EMPTY("-", null), WHITE("W", "White"), BLACK("B", "Black"),
@@ -40,3 +78,4 @@ enum Piece {
 
 
 }
+*/
