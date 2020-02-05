@@ -71,7 +71,7 @@ class Pawn extends Piece {
                 System.out.println(to.getx());
                 return false;
             }
-            if (from.gety() > to.gety() + 2 || from.gety() > to.gety() - 2) {
+            if (to.gety() - from.gety() > 2 || to.gety() - from.gety() < -2) {
                 System.out.println("Haha");
                 System.out.println(from.gety());
                 System.out.println(to.gety());
