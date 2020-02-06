@@ -17,7 +17,7 @@ abstract class Piece {
     String color;
 
     /* Moves me from FROM to TO */
-    abstract Square move(Square from, Square to);
+    abstract boolean move(Square from, Square to);
 
     /* Checks if moving from FROM to TO is allowed. */
     abstract boolean isLegal(Square from, Square to);

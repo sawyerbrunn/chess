@@ -26,8 +26,8 @@ class Nopiece extends Piece {
     }
 
     @Override
-    Square move(Square from, Square to) {
-    	return null;
+    boolean move(Square from, Square to) {
+    	return false;
     }
 
     @Override

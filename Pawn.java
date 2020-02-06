@@ -24,17 +24,17 @@ class Pawn extends Piece {
     }
 
     @Override
-    Square move(Square from, Square to) {
-    	if (isLegal(from, to)) {
-    		s.empty();
-    		to.empty();
-    		s = to;
-    		s.put(this);
-            b.turn();
-            hasMoved = true;
-            return to;
+    boolean move(Square from, Square to) {
+    	if (!isLegal(from, to)) {
+    		return false;
     	}
-        return null;
+        s.empty();
+        to.empty();
+        s = to;
+        s.put(this);
+        b.turn();
+        hasMoved = true;
+        return true;
     }
 
     @Override
@@ -55,51 +55,51 @@ class Pawn extends Piece {
             if (!(from.gety() == to.gety() + 1 || from.gety() == to.gety() - 1)) {
                 return false;
             }
-            if (from.gety() > to.gety() && color == "White") {
+            if (from.gety() > to.gety() && b.getTurn() == "White") {
                 return false;
             }
-            if (from.gety() < to.gety() && color == "Black") {
+            if (from.gety() < to.gety() && b.getTurn() == "Black") {
                 return false;
             }
-            System.out.println(42);
+            //System.out.println(42);
             return b.noCheck();
         } else {
             //pawn is not attacking, just moving
             if (from.getx() != to.getx()) {
-                System.out.println(1);
-                System.out.println(from.getx());
-                System.out.println(to.getx());
+                //System.out.println(1);
+                //System.out.println(from.getx());
+                //System.out.println(to.getx());
                 return false;
             }
             if (to.gety() - from.gety() > 2 || to.gety() - from.gety() < -2) {
-                System.out.println("Haha");
-                System.out.println(to.gety() - from.gety() > 2);
-                System.out.println(to.gety() - from.gety() < -2);
+                //System.out.println("Haha");
+                //System.out.println(to.gety() - from.gety() > 2);
+                //System.out.println(to.gety() - from.gety() < -2);
                 return false;
             }
-            if (from.gety() <= to.gety() && color == "Black") {
-                System.out.println(3);
+            if (from.gety() <= to.gety() && b.getTurn() == "Black") {
+                //System.out.println(3);
                 return false;
-            } else if (from.gety() >= to.gety() && color == "White") {
-                System.out.println(4);
+            } else if (from.gety() >= to.gety() && b.getTurn() == "White") {
+                //System.out.println(4);
                 return false;
             }
             if (from.gety() == to.gety() + 2 || from.gety() == to.gety() - 2) {
                 if (hasMoved) {
-                    System.out.println(11);
+                    //System.out.println(11);
                     return false;
-                } else if (from.gety() == to.gety() + 2 && !b.get(from.gety() + 1, from.getx()).isEmpty()) {
-                    System.out.println(12);
+                } else if (from.gety() == to.gety() + 2 && !b.get(from.getx(), from.gety() - 1).isEmpty()) {
+                    //System.out.println(12);
                     return false;
-                } else if ((from.gety() == to.gety() - 2 && !b.get(from.gety() - 1, from.getx()).isEmpty())) {
-                    System.out.println(13);
+                } else if ((from.gety() == to.gety() - 2 && !b.get(from.getx(), from.gety() + 1).isEmpty())) {
+                    //System.out.println(13);
                     return false;
                 } else {
-                    System.out.println(52);
+                    //System.out.println(52);
                     return b.noCheck();
                 }
             }
-            System.out.println(62);
+            //System.out.println(62);
             return b.noCheck();
             }
         }

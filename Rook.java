@@ -25,15 +25,15 @@ class Rook extends Piece {
     }
 
     @Override
-    Square move(Square from, Square to) {
+    boolean move(Square from, Square to) {
     	if (isLegal(from, to)) {
     		s.empty();
     		to.empty();
     		s = to;
     		s.put(this);
-            return to;
+            return true;
     	}
-        return null;
+        return false;
     }
 
     @Override
