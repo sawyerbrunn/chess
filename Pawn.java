@@ -1,5 +1,7 @@
 package chess;
 
+import java.lang.Math;
+
 class Pawn extends Piece {
 	 /* The name of this piece */
     String name;
@@ -15,12 +17,16 @@ class Pawn extends Piece {
 
     String color;
 
+    /* The turn that I double moved */
+    int doubleMoved;
+
      /* Creates a new piece on Square sq of Board brd */
     Pawn(Square sq, Board brd, String col) {
         s = sq;
         b = brd;
         hasMoved = false;
         color = col;
+        doubleMoved = -1;
     }
 
     @Override
@@ -28,6 +34,22 @@ class Pawn extends Piece {
     	if (!isLegal(from, to)) {
     		return false;
     	}
+        if (enPoisson(from, to)) {
+            s.empty();
+            s = to;
+            s.put(this);
+            if (color == "White") {
+                b.get(to.getx(), to.gety() - 1).empty();
+            } else {
+                b.get(to.getx(), to.gety() + 1).empty();
+            }
+            b.turn();
+            hasMoved = true;
+            return true;
+        } 
+        if (doubleMove(from, to)) {
+            doubleMoved = b.getMoveNumber();
+        }
         s.empty();
         to.empty();
         s = to;
@@ -37,10 +59,32 @@ class Pawn extends Piece {
         return true;
     }
 
+    /* returns when I double moved */
+    int doubleMoved() {
+        return doubleMoved;
+    }
+
+    boolean doubleMove(Square from, Square to) {
+        return Math.abs(from.gety() - to.gety()) == 2;
+    }
+
+    /* return true iff move is legal en poisson */
+    boolean enPoisson(Square from, Square to) {
+        if (color.equals("White")) {
+            return to.isEmpty() && b.get(to.getx(), to.gety() - 1).getPiece() instanceof Pawn
+            && Math.abs(b.get(to.getx(), to.gety() - 1).getPiece().doubleMoved() - b.getMoveNumber()) <= 1;
+        } else if (color.equals("Black")) {
+            return to.isEmpty() && b.get(to.getx(), to.gety() + 1).getPiece() instanceof Pawn
+            && Math.abs(b.get(to.getx(), to.gety() + 1).getPiece().doubleMoved() - b.getMoveNumber()) <= 1;
+        }
+        return false;
+    }
+
     @Override
     boolean isLegal(Square from, Square to) {
-
-
+        if (enPoisson(from, to)) {
+            return b.noCheck();
+        }
         if (!to.isEmpty()) {
             // pawn is attacking
             if (to.getPiece().getColor().equals(color)) {

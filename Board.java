@@ -123,7 +123,7 @@ class Board {
 
 	/* Returns whether or not this move checks TURN's king. Will implement later */
 	boolean noCheck() {
-		System.out.println("Check");
+		//System.out.println("Check");
 		return true;
 	}
 
@@ -139,7 +139,20 @@ class Board {
 
 	/* Switch whose turn it is */
 	void turn() {
+		if (turn == "White") {
+			whiteMoves++;
+		} else {
+			blackMoves++;
+		}
 		turn = (turn == "White") ? "Black" : "White";
+	}
+
+	int getWhiteMoves() {
+		return whiteMoves;
+	}
+
+	int getBlackMoves() {
+		return blackMoves;
 	}
 
 
@@ -161,6 +174,10 @@ class Board {
         }
         return r;
 
+    }
+
+    int getMoveNumber() {
+    	return (getTurn() == "White") ? whiteMoves : blackMoves;
     }
 
     /* Returns whose turn it is */

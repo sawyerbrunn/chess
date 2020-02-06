@@ -19,6 +19,14 @@ abstract class Piece {
     /* Moves me from FROM to TO */
     abstract boolean move(Square from, Square to);
 
+    int doubleMoved() {
+        return -1;
+    }
+
+    Square getSquare() {
+        return s;
+    }
+
     /* Checks if moving from FROM to TO is allowed. */
     abstract boolean isLegal(Square from, Square to);
 
