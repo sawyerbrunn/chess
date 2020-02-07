@@ -36,7 +36,7 @@ abstract class Piece {
     abstract String getSymbol();
 
     String getColor() {
-        return "None";
+        return color;
     }
 
 }

@@ -1,5 +1,7 @@
 package chess;
 
+import java.lang.Math;
+
 class Queen extends Piece {
 
 	 /* The name of this piece */
@@ -31,13 +33,109 @@ class Queen extends Piece {
     		to.empty();
     		s = to;
     		s.put(this);
+            b.turn();
+            hasMoved = true;
             return true;
     	}
         return false;
     }
 
     @Override
-    boolean isLegal(Square from, Square to) { return false; }
+    boolean isLegal(Square from, Square to) {
+        /*System.out.println("queen islegal check");
+        System.out.println(from.getx());
+        System.out.println(to.getx());
+        System.out.println(from.gety());
+        System.out.println(to.gety());
+        System.out.println(from.getPiece().getColor());
+        System.out.println(b.getTurn());
+        */
+        if (!from.getPiece().getColor().equals(b.getTurn())) {
+            return false;
+        }
+        if (to.getPiece().getColor().equals(b.getTurn())) {
+            return false;
+        }
+        System.out.println("hi");
+        if (from.getx() == to.getx() && from.gety() > to.gety()) {
+            // moving vertically down
+            for (int y = from.gety() - 1; y > to.gety(); y--) {
+                if (!(b.get(to.getx(), y).getPiece() instanceof Nopiece)) {
+                    return false;
+                }
+            }
+            return b.noCheck();
+        } else if (from.getx() == to.getx() && from.gety() < to.gety()) {
+            //moving vertically up
+            //System.out.println("vert up");
+            for (int y = from.gety() + 1; y < to.gety(); y++) {
+                if (!(b.get(to.getx(), y).getPiece() instanceof Nopiece)) {
+                    System.out.println(y);
+                    System.out.println(to.gety());
+                    return false;
+                }
+            }
+            //System.out.println("legal!");
+            return b.noCheck();
+
+        } else if (from.gety() == to.gety() && from.getx() < to.getx()) {
+            for (int x = from.getx() + 1; x < to.getx(); x++) {
+                if (!(b.get(x, to.gety()).getPiece() instanceof Nopiece)) {
+                    //System.out.println(y);
+                    //System.out.println(to.gety());
+                    return false;
+                }
+            }
+            return b.noCheck();
+        } else if (from.gety() == to.gety() && from.getx() > to.getx()) {
+            for (int x = from.getx() - 1; x < to.getx(); x--) {
+                if (!(b.get(x, to.gety()).getPiece() instanceof Nopiece)) {
+                    //System.out.println(y);
+                    //System.out.println(to.gety());
+                    return false;
+                }
+            }
+            return b.noCheck();
+        } else if (Math.abs(from.getx() - to.getx()) == Math.abs(from.gety() - to.gety())) {
+            // moving diagolally
+            if (to.getx() > from.getx() && to.gety() > from.gety()) {
+                for (int x = from.getx() + 1, y = from.gety() + 1; x < to.getx(); x++, y++) {
+                    if (!(b.get(to.getx(), y).getPiece() instanceof Nopiece)) {
+                        return false;
+                    }
+                }
+                return b.noCheck();
+            } else if (to.getx() > from.getx() && to.gety() < from.gety()) {
+                for (int x = from.getx() + 1, y = from.gety() - 1; x < to.getx(); x++, y--) {
+                    if (!(b.get(to.getx(), y).getPiece() instanceof Nopiece)) {
+                        return false;
+                    }
+                }
+                return b.noCheck();
+            } else if (to.getx() < from.getx() && to.gety() > from.gety()) {
+                for (int x = from.getx() - 1, y = from.gety() + 1; x < to.getx(); x--, y++) {
+                    if (!(b.get(to.getx(), y).getPiece() instanceof Nopiece)) {
+                        return false;
+                    }
+                }
+                return b.noCheck();
+            } else {
+                for (int x = from.getx() - 1, y = from.gety() - 1; x < to.getx(); x--, y--) {
+                    if (!(b.get(to.getx(), y).getPiece() instanceof Nopiece)) {
+                        return false;
+                    }
+                }
+                return b.noCheck();
+            }
+        }
+        //System.out.println("yikes");
+        return false;
+    }
+
+    @Override
+    String getColor() {
+        return color;
+    }
 
     @Override
     boolean hasMoved() { return false; }
