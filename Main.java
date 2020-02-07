@@ -41,7 +41,7 @@ class Main {
 				System.exit(1);
 			} else if (move.toUpperCase().equals("RESET")) {
 				b = new Board();
-				System.out.println(b.toString());
+				//System.out.println(b.toString());
 				continue;
 			}
 			String from = move.substring(0, 2).toUpperCase();
@@ -60,6 +60,29 @@ class Main {
 				System.out.println("Please enter a legal move.");
 				legal = false;
 			} else {
+				Square sq = b.askPromote();
+				if (sq != null) {
+					System.out.println("Promote Pawn to?");
+					System.out.println("Enter one of: Q (Queen), K (Knight), R (Rook), B (Bishop)");
+					while (true) {
+						String promo = s.nextLine();
+						if (promo.toUpperCase().equals("Q")) {
+							b.put(sq, new Queen(sq, b, b.getOtherTurn()));
+							break;
+						} else if ((promo.toUpperCase().equals("K"))) {
+							b.put(sq, new Knight(sq, b, b.getOtherTurn()));
+							break;
+						} else if ((promo.toUpperCase().equals("R"))) {
+							b.put(sq, new Rook(sq, b, b.getOtherTurn()));
+							break;
+						} else if ((promo.toUpperCase().equals("B"))) {
+							b.put(sq, new Bishop(sq, b, b.getOtherTurn()));
+							break;
+						} else {
+							System.out.println("Please enter a valid promotion.");
+						}
+					}
+				}
 				legal = true;
 			}
 		}

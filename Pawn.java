@@ -57,7 +57,18 @@ class Pawn extends Piece {
         s.put(this);
         b.turn();
         hasMoved = true;
+        if (canPromote(to)) {
+            b.promote = to;
+        }
         return true;
+    }
+
+    boolean canPromote(Square s) {
+        if (color.equals("White")) {
+            return s.gety() == Board.SIZE - 1;
+        } else {
+            return s.gety() == 0;
+        }
     }
 
     /* returns when I double moved */

@@ -32,6 +32,8 @@ class Board {
 	/* The number of moves made by white */
 	private int whiteMoves;
 
+	Square promote;
+
 	/* Initialize a new chess board */
 	Board() {
 		init();
@@ -47,6 +49,7 @@ class Board {
 
 	/* Sets up a new chess board in initial position */
 	void init() {
+		promote = null;
 		turn = "White";
 		winner = null;
 		map = new Square[SIZE][SIZE];
@@ -121,6 +124,15 @@ class Board {
 		put(4, 7, new King(get(4, 7), this, "Black"));
 	}
 
+	Square askPromote() {
+		if (promote == null) {
+			return null;
+		}
+		Square r = promote;
+		promote = null;
+		return r;
+	}
+
 	/* Returns whether or not this move checks TURN's king. Will implement later */
 	boolean noCheck() {
 		//System.out.println("Check");
@@ -130,6 +142,10 @@ class Board {
 	/* Places p on square (i, j) */
 	void put(int i, int j, Piece p) {
 		map[i][j].put(p);
+	}
+
+	void put(Square s, Piece p) {
+		s.put(p);
 	}
 
 	/* Returns the square (i, j) */
@@ -184,6 +200,10 @@ class Board {
     /* Returns whose turn it is */
     String getTurn() {
     	return turn;
+    }
+
+    String getOtherTurn() {
+    	return (turn == "White") ? "Black" : "White";
     }
 
 
