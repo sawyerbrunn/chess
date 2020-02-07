@@ -31,6 +31,16 @@ class Pawn extends Piece {
     }
 
     @Override
+    void copiedMove(Square from, Square to) {
+        s.empty();
+        to.toEmpty();
+        s = to;
+        s.put(this);
+        b.turn();
+        hasMoved = true;
+    }
+
+    @Override
     boolean move(Square from, Square to) {
     	if (!isLegal(from, to)) {
     		return false;
@@ -40,9 +50,9 @@ class Pawn extends Piece {
             s = to;
             s.put(this);
             if (color == "White") {
-                b.get(to.getx(), to.gety() - 1).empty();
+                b.get(to.getx(), to.gety() - 1).toEmpty();
             } else {
-                b.get(to.getx(), to.gety() + 1).empty();
+                b.get(to.getx(), to.gety() + 1).toEmpty();
             }
             b.turn();
             hasMoved = true;
@@ -52,7 +62,7 @@ class Pawn extends Piece {
             doubleMoved = b.getMoveNumber();
         }
         s.empty();
-        to.empty();
+        to.toEmpty();
         s = to;
         s.put(this);
         b.turn();
@@ -80,14 +90,18 @@ class Pawn extends Piece {
         return Math.abs(from.gety() - to.gety()) == 2;
     }
 
-    /* return true iff move is legal en poisson */
+    /* return true iff move is legal en passant */
     boolean enPassant(Square from, Square to) {
         if (color.equals("White")) {
             return to.isEmpty() && b.get(to.getx(), to.gety() - 1).getPiece() instanceof Pawn
-            && Math.abs(b.get(to.getx(), to.gety() - 1).getPiece().doubleMoved() - b.getMoveNumber()) <= 1;
+            && Math.abs(b.get(to.getx(), to.gety() - 1).getPiece().doubleMoved() - b.getMoveNumber()) <= 1
+            && !b.get(to.getx(), to.gety() - 1).getPiece().getColor().equals("White")
+            && Math.abs(from.getx() - to.getx()) == 1 && (to.gety() - from.gety() == 1);
         } else if (color.equals("Black")) {
             return to.isEmpty() && b.get(to.getx(), to.gety() + 1).getPiece() instanceof Pawn
-            && Math.abs(b.get(to.getx(), to.gety() + 1).getPiece().doubleMoved() - b.getMoveNumber()) <= 1;
+            && Math.abs(b.get(to.getx(), to.gety() + 1).getPiece().doubleMoved() - b.getMoveNumber()) <= 1
+            && !b.get(to.getx(), to.gety() - 1).getPiece().getColor().equals("Black")
+            && Math.abs(from.getx() - to.getx()) == 1 && (to.gety() - from.gety() == -1);
         }
         return false;
     }
@@ -98,7 +112,7 @@ class Pawn extends Piece {
             return false;
         }
         if (enPassant(from, to)) {
-            return b.noCheck();
+            return b.noCheck(from, to);
         }
         if (!to.isEmpty()) {
             // pawn is attacking
@@ -121,7 +135,7 @@ class Pawn extends Piece {
                 return false;
             }
             //System.out.println(42);
-            return b.noCheck();
+            return b.noCheck(from, to);
         } else {
             //pawn is not attacking, just moving
             if (from.getx() != to.getx()) {
@@ -155,13 +169,29 @@ class Pawn extends Piece {
                     return false;
                 } else {
                     //System.out.println(52);
-                    return b.noCheck();
+                    return b.noCheck(from, to);
                 }
             }
             //System.out.println(62);
-            return b.noCheck();
-            }
+            return b.noCheck(from, to);
         }
+    }
+
+
+    @Override
+    boolean attacks(Square sq) {
+        String t = b.getTurn();
+        boolean r;
+        if (t.equals(getColor())) {
+            return isLegal(s, sq);
+        } else {
+            b.tempTurn();
+            r = isLegal(s, sq);
+        }
+        b.tempTurn();
+        return r;
+        
+    }
 
     String getColor() {
         return color;

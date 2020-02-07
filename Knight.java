@@ -1,4 +1,5 @@
 package chess;
+import java.lang.Math;
 
 class Knight extends Piece {
 
@@ -28,16 +29,60 @@ class Knight extends Piece {
     boolean move(Square from, Square to) {
     	if (isLegal(from, to)) {
     		s.empty();
-    		to.empty();
+    		to.toEmpty();
     		s = to;
     		s.put(this);
+            b.turn();
+            hasMoved = true;
             return true;
     	}
         return false;
     }
 
     @Override
-    boolean isLegal(Square from, Square to) { return false; }
+    void copiedMove(Square from, Square to) {
+        s.empty();
+        to.toEmpty();
+        s = to;
+        s.put(this);
+        b.turn();
+        hasMoved = true;
+    }
+
+    @Override
+    boolean isLegal(Square from, Square to) {
+        if (!from.getPiece().getColor().equals(b.getTurn())) {
+            return false;
+        }
+        if (to.getPiece().getColor().equals(b.getTurn())) {
+            return false;
+        }
+        if (Math.abs(from.getx() - to.getx()) == 2 && Math.abs(from.gety() - to.gety()) == 1
+            || Math.abs(from.getx() - to.getx()) == 1 && Math.abs(from.gety() - to.gety()) == 2) {
+            return b.noCheck(from, to);
+        }
+        return false;
+    }
+
+    @Override
+    boolean attacks(Square sq) {
+        String t = b.getTurn();
+        boolean r;
+        if (t.equals(getColor())) {
+            return isLegal(s, sq);
+        } else {
+            b.tempTurn();
+            r = isLegal(s, sq);
+        }
+        b.tempTurn();
+        return r;
+        
+    }
+
+    @Override
+    String getColor() {
+        return color;
+    }
 
     @Override
     boolean hasMoved() { return false; }

@@ -26,9 +26,18 @@ class Nopiece extends Piece {
     }
 
     @Override
+    boolean attacks(Square sq) {
+        return false;
+        
+    }
+
+    @Override
     boolean move(Square from, Square to) {
     	return false;
     }
+
+    @Override
+    void copiedMove(Square from, Square to) {}
 
     @Override
     boolean isLegal(Square from, Square to) { return false; }

@@ -28,7 +28,7 @@ class Bishop extends Piece {
     boolean move(Square from, Square to) {
     	if (isLegal(from, to)) {
     		s.empty();
-    		to.empty();
+    		to.toEmpty();
     		s = to;
     		s.put(this);
             b.turn();
@@ -36,6 +36,16 @@ class Bishop extends Piece {
             return true;
     	}
         return false;
+    }
+    
+    @Override
+    void copiedMove(Square from, Square to) {
+        s.empty();
+        to.toEmpty();
+        s = to;
+        s.put(this);
+        b.turn();
+        hasMoved = true;
     }
 
     @Override
@@ -54,32 +64,47 @@ class Bishop extends Piece {
                         return false;
                     }
                 }
-                return b.noCheck();
+                return b.noCheck(from, to);
             } else if (to.getx() > from.getx() && to.gety() < from.gety()) {
                 for (int x = from.getx() + 1, y = from.gety() - 1; x < to.getx(); x++, y--) {
                     if (!(b.get(to.getx(), y).getPiece() instanceof Nopiece)) {
                         return false;
                     }
                 }
-                return b.noCheck();
+                return b.noCheck(from, to);
             } else if (to.getx() < from.getx() && to.gety() > from.gety()) {
                 for (int x = from.getx() - 1, y = from.gety() + 1; x > to.getx(); x--, y++) {
                     if (!(b.get(to.getx(), y).getPiece() instanceof Nopiece)) {
                         return false;
                     }
                 }
-                return b.noCheck();
+                return b.noCheck(from, to);
             } else {
                 for (int x = from.getx() - 1, y = from.gety() - 1; x > to.getx(); x--, y--) {
                     if (!(b.get(to.getx(), y).getPiece() instanceof Nopiece)) {
                         return false;
                     }
                 }
-                return b.noCheck();
+                return b.noCheck(from, to);
             }
         } else {
             return false;
         }
+    }
+
+    @Override
+    boolean attacks(Square sq) {
+        String t = b.getTurn();
+        boolean r;
+        if (t.equals(getColor())) {
+            return isLegal(s, sq);
+        } else {
+            b.tempTurn();
+            r = isLegal(s, sq);
+        }
+        b.tempTurn();
+        return r;
+        
     }
 
     @Override

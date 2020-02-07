@@ -32,6 +32,8 @@ class Main {
 		Scanner s = new Scanner(System.in);
 		boolean legal = true;
 		while(true) {
+			//System.out.println(b.whitePieces.size());
+			//System.out.println(b.blackPieces.size());
 			if (legal) {
 				System.out.println(b.toString());
 			}
@@ -62,6 +64,11 @@ class Main {
 			} else {
 				Square sq = b.askPromote();
 				if (sq != null) {
+					if (b.getOtherTurn() == "White") {
+						b.whitePieces.remove(sq.getPiece());
+					} else {
+						b.blackPieces.remove(sq.getPiece());
+				}
 					System.out.println("Promote Pawn to?");
 					System.out.println("Enter one of: Q (Queen), K (Knight), R (Rook), B (Bishop)");
 					while (true) {

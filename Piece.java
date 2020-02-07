@@ -16,6 +16,8 @@ abstract class Piece {
 
     String color;
 
+    int doubleMoved;
+
     /* Moves me from FROM to TO */
     abstract boolean move(Square from, Square to);
 
@@ -25,6 +27,22 @@ abstract class Piece {
 
     Square getSquare() {
         return s;
+    }
+
+    abstract void copiedMove(Square from, Square to);
+
+    boolean attacks(Square sq) {
+        String t = b.getTurn();
+        boolean r;
+        if (t.equals(getColor())) {
+            return isLegal(s, sq);
+        } else {
+            b.tempTurn();
+            r = isLegal(s, sq);
+        }
+        b.tempTurn();
+        return r;
+        
     }
 
     /* Checks if moving from FROM to TO is allowed. */
