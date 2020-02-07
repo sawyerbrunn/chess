@@ -29,13 +29,20 @@ class Main {
 
 	public static void main(String[] args) {
 		Board b = new Board();
-		System.out.println(b.toString());
 		Scanner s = new Scanner(System.in);
+		boolean legal = true;
 		while(true) {
+			if (legal) {
+				System.out.println(b.toString());
+			}
 			System.out.println("Enter " + b.getTurn() + "'s Move:");
 			String move = s.nextLine();
 			if (move.toUpperCase().equals("EXIT")) {
 				System.exit(1);
+			} else if (move.toUpperCase().equals("RESET")) {
+				b = new Board();
+				System.out.println(b.toString());
+				continue;
 			}
 			String from = move.substring(0, 2).toUpperCase();
 			String to = move.substring(move.length() - 2, move.length()).toUpperCase();
@@ -49,9 +56,12 @@ class Main {
 			//System.out.println(s2.getPiece().getColor().equals(s1.getPiece().getColor()));
 			//System.out.println(s1.getPiece().isLegal(s1, s2));
 			if (!s1.getPiece().move(s1, s2)) {
+				System.out.println(b.toString());
 				System.out.println("Please enter a legal move.");
+				legal = false;
+			} else {
+				legal = true;
 			}
-			System.out.println(b.toString());
 		}
 
 		

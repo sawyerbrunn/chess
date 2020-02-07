@@ -164,7 +164,7 @@ class Board {
                 if (col == SIZE - 1) {
                     r += get(col, row).getPiece().getSymbol();
                 } else if (col == 0) {
-                    r +=  "   " + get(col, row).getPiece().getSymbol() + " ";
+                    r +=  "  " + Integer.toString(row+1) + " " + get(col, row).getPiece().getSymbol() + " ";
                 } else {
                     r += get(col, row).getPiece().getSymbol() + " ";
                 }
@@ -172,6 +172,7 @@ class Board {
             r += "\n";
 
         }
+        r += "     A  B  C  D  E  F  G  H  \n";
         return r;
 
     }

@@ -15,9 +15,10 @@ class Pawn extends Piece {
     /* Tracks if I have moved */
     boolean hasMoved;
 
+    /* My color */
     String color;
 
-    /* The turn that I double moved */
+    /* The turn that I double moved (-1 if I never double moved) */
     int doubleMoved;
 
      /* Creates a new piece on Square sq of Board brd */
@@ -34,7 +35,7 @@ class Pawn extends Piece {
     	if (!isLegal(from, to)) {
     		return false;
     	}
-        if (enPoisson(from, to)) {
+        if (enPassant(from, to)) {
             s.empty();
             s = to;
             s.put(this);
@@ -69,7 +70,7 @@ class Pawn extends Piece {
     }
 
     /* return true iff move is legal en poisson */
-    boolean enPoisson(Square from, Square to) {
+    boolean enPassant(Square from, Square to) {
         if (color.equals("White")) {
             return to.isEmpty() && b.get(to.getx(), to.gety() - 1).getPiece() instanceof Pawn
             && Math.abs(b.get(to.getx(), to.gety() - 1).getPiece().doubleMoved() - b.getMoveNumber()) <= 1;
@@ -82,7 +83,10 @@ class Pawn extends Piece {
 
     @Override
     boolean isLegal(Square from, Square to) {
-        if (enPoisson(from, to)) {
+        if (!from.getPiece().getColor().equals(b.getTurn())) {
+            return false;
+        }
+        if (enPassant(from, to)) {
             return b.noCheck();
         }
         if (!to.isEmpty()) {
