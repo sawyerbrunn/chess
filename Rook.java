@@ -31,16 +31,66 @@ class Rook extends Piece {
     		to.empty();
     		s = to;
     		s.put(this);
+            b.turn();
+            hasMoved = true;
             return true;
     	}
         return false;
     }
 
     @Override
-    boolean isLegal(Square from, Square to) { return false; }
+    boolean isLegal(Square from, Square to) {
+        if (!from.getPiece().getColor().equals(b.getTurn())) {
+            return false;
+        }
+        if (to.getPiece().getColor().equals(b.getTurn())) {
+            return false;
+        }
+        if (from.getx() == to.getx() && from.gety() > to.gety()) {
+            // moving vertically down
+            for (int y = from.gety() - 1; y > to.gety(); y--) {
+                if (!(b.get(to.getx(), y).getPiece() instanceof Nopiece)) {
+                    return false;
+                }
+            }
+            return b.noCheck();
+        } else if (from.getx() == to.getx() && from.gety() < to.gety()) {
+            //moving vertically up
+            for (int y = from.gety() + 1; y < to.gety(); y++) {
+                if (!(b.get(to.getx(), y).getPiece() instanceof Nopiece)) {
+                    System.out.println(y);
+                    System.out.println(to.gety());
+                    return false;
+                }
+            }
+            return b.noCheck();
+
+        } else if (from.gety() == to.gety() && from.getx() < to.getx()) {
+            for (int x = from.getx() + 1; x < to.getx(); x++) {
+                if (!(b.get(x, to.gety()).getPiece() instanceof Nopiece)) {
+                    return false;
+                }
+            }
+            return b.noCheck();
+        } else if (from.gety() == to.gety() && from.getx() > to.getx()) {
+            for (int x = from.getx() - 1; x < to.getx(); x--) {
+                if (!(b.get(x, to.gety()).getPiece() instanceof Nopiece)) {
+                    return false;
+                }
+            }
+            return b.noCheck();
+        } else {
+            return false;
+        }
+    }
 
     @Override
-    boolean hasMoved() { return false; }
+    String getColor() {
+        return color;
+    }
+
+    @Override
+    boolean hasMoved() { return hasMoved; }
 
     @Override
     String getSymbol() {

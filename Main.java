@@ -41,7 +41,7 @@ class Main {
 				System.exit(1);
 			} else if (move.toUpperCase().equals("RESET")) {
 				b = new Board();
-				//System.out.println(b.toString());
+				System.out.println(b.toString());
 				continue;
 			}
 			String from = move.substring(0, 2).toUpperCase();
