@@ -1,4 +1,5 @@
 package chess;
+import java.util.Iterator;
 
 abstract class Piece {
 
@@ -55,6 +56,10 @@ abstract class Piece {
 
     String getColor() {
         return color;
+    }
+
+    Iterator<Move> legalMoves() {
+        return null;
     }
 
 }

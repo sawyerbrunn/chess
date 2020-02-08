@@ -1,5 +1,5 @@
 package chess;
-
+import java.util.*;
 import java.lang.Math;
 class King extends Piece {
 
@@ -96,5 +96,53 @@ class King extends Piece {
     String getSymbol() {
         return (color.equals("White")) ? "WK" : "BK";
     }
+
+    Iterator<Move> legalMoves() {
+        return new LegalMoveIterator(color);
+    }
+
+    private class LegalMoveIterator implements Iterator<Move> {
+
+        String color;
+        int dir;
+        Move m;
+
+        LegalMoveIterator(String c) {
+            color = c;
+            dir = -1;
+            m = null;
+            toNext();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return dir < 8;
+        }
+
+        @Override 
+        public Move next() {
+            Move r = m;
+            toNext();
+            return r;
+
+        }
+
+        void toNext() {
+            dir++;
+            while (dir < 8) {
+                Square to = s.getDir(dir, 1);
+                if (to == null) {
+                    dir++;
+                } else if (isLegal(s, to)) {
+                    m = new Move(s, to);
+                    break;
+                } else {
+                    dir++;
+                }
+            }
+        }
+    }
+
+
 
 }

@@ -2,7 +2,7 @@ package chess;
 import ucb.util.CommandArgs;
 
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
 
 class Main {
 
@@ -37,6 +37,21 @@ class Main {
 			if (legal) {
 				System.out.println(b.toString());
 			}
+			/* TESTING ITERATORS */
+			//System.out.println("finding moves");
+			for (int i = 0; i < b.whitePieces.size(); i++) {
+				//System.out.println(b.whitePieces.get(i).getSymbol());
+			}
+
+			Iterator<Move> it = b.allMoves();
+			List<Move> l = new ArrayList<Move>();
+			while (it.hasNext()) {
+				l.add(it.next());
+			}
+			for (int i = 0; i < l.size(); i++) {
+				System.out.println(l.get(i).getSymbol());
+			}
+			/* END TEST */
 			System.out.println("Enter " + b.getTurn() + "'s Move:");
 			String move = s.nextLine();
 			if (move.toUpperCase().equals("EXIT")) {

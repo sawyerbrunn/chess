@@ -2,6 +2,7 @@ package chess;
 
 import java.util.*;
 import static chess.Piece.*;
+import java.util.Iterator;
 
 class Board {
 
@@ -80,6 +81,10 @@ class Board {
 		blackMoves = model.blackMoves;
 		whiteMoves = model.whiteMoves;
 
+	}
+
+	String winner() {
+		return null;
 	}
 
 	/* Sets up a new chess board in initial position */
@@ -193,6 +198,28 @@ class Board {
 
 	boolean noCheck() {
 		return true;
+	}
+
+	/* Returns true iff color's king is currently in check */
+	boolean inCheck(String color) {
+		Board b = new Board(this);
+		if (color.equals("White")) {
+			for (int i = 0; i < b.blackPieces.size(); i++) {
+				if (b.blackPieces.get(i).attacks(b.wking)) {
+					//System.out.println("This move would place White in check.");
+					return true;
+				}
+			}
+			return false;
+		} else {
+			for (int i = 0; i < b.whitePieces.size(); i++) {
+				if (b.whitePieces.get(i).attacks(b.bking)) {
+					//System.out.println("This move would place Black in check.");
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 
 	/* Returns whether or not this move checks TURN's king. Will implement later */
@@ -309,6 +336,60 @@ class Board {
 
     String getOtherTurn() {
     	return (turn == "White") ? "Black" : "White";
+    }
+
+    Iterator<Move> allMoves() {
+    	return new allMoveIterator(getTurn());
+    }
+
+
+    private class allMoveIterator implements Iterator<Move> {
+    	int i;
+    	String color;
+    	List<Piece> pieces;
+    	Move m;
+    	Iterator<Move> curr;
+
+    	allMoveIterator(String col) {
+    		color = col;
+    		curr = null;
+    		i = -1;
+    		pieces = (col.equals("White")) ? whitePieces : blackPieces;
+    		m = null;
+    		toNext();
+    	}
+
+    	@Override
+    	public boolean hasNext() {
+    		return i < pieces.size();
+    	}
+
+    	@Override 
+    	public Move next() {
+    		//System.out.println("Current piece: " + pieces.get(i).getSymbol());
+    		Move r = m;
+    		toNext();
+    		return r;
+
+    	}
+
+    	void toNext() {
+    		if (curr != null && curr.hasNext()) {
+    			m = curr.next();
+    		} else {
+    			while( curr == null || !curr.hasNext()) {
+    				i++;
+    				if (!hasNext()) {
+    					return;
+    				}
+    				curr = pieces.get(i).legalMoves();
+    			}
+    			m = curr.next();
+    		}
+    	}
+
+
+
     }
 
 

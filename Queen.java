@@ -1,6 +1,7 @@
 package chess;
 
 import java.lang.Math;
+import java.util.*;
 
 class Queen extends Piece {
 
@@ -95,28 +96,28 @@ class Queen extends Piece {
             // moving diagolally
             if (to.getx() > from.getx() && to.gety() > from.gety()) {
                 for (int x = from.getx() + 1, y = from.gety() + 1; x < to.getx(); x++, y++) {
-                    if (!(b.get(to.getx(), y).getPiece() instanceof Nopiece)) {
+                    if (!(b.get(x, y).getPiece() instanceof Nopiece)) {
                         return false;
                     }
                 }
                 return b.noCheck(from, to);
             } else if (to.getx() > from.getx() && to.gety() < from.gety()) {
                 for (int x = from.getx() + 1, y = from.gety() - 1; x < to.getx(); x++, y--) {
-                    if (!(b.get(to.getx(), y).getPiece() instanceof Nopiece)) {
+                    if (!(b.get(x, y).getPiece() instanceof Nopiece)) {
                         return false;
                     }
                 }
                 return b.noCheck(from, to);
             } else if (to.getx() < from.getx() && to.gety() > from.gety()) {
                 for (int x = from.getx() - 1, y = from.gety() + 1; x > to.getx(); x--, y++) {
-                    if (!(b.get(to.getx(), y).getPiece() instanceof Nopiece)) {
+                    if (!(b.get(x, y).getPiece() instanceof Nopiece)) {
                         return false;
                     }
                 }
                 return b.noCheck(from, to);
             } else {
                 for (int x = from.getx() - 1, y = from.gety() - 1; x > to.getx(); x--, y--) {
-                    if (!(b.get(to.getx(), y).getPiece() instanceof Nopiece)) {
+                    if (!(b.get(x, y).getPiece() instanceof Nopiece)) {
                         return false;
                     }
                 }
@@ -152,5 +153,58 @@ class Queen extends Piece {
     @Override
     String getSymbol() {
         return (color.equals("White")) ? "WQ" : "BQ";
+    }
+
+    Iterator<Move> legalMoves() {
+        return new LegalMoveIterator(color);
+    }
+
+    private class LegalMoveIterator implements Iterator<Move> {
+
+        String color;
+        int dir;
+        int dist;
+        Move m;
+
+
+        LegalMoveIterator(String c) {
+            color = c;
+            dir = -1;
+            m = null;
+            dist = 0;
+            toNext();
+
+        }
+
+        @Override
+        public boolean hasNext() {
+            return dir < 8;
+            //return false;
+        }
+
+        @Override 
+        public Move next() {
+            Move r = m;
+            toNext();
+            return r;
+
+        }
+
+        void toNext() {
+            dist++;
+            while (hasNext()) {
+                Square to = s.getDir(dir, dist);
+                if (to == null) {
+                    dist = 1;
+                    dir++;
+                } else if (isLegal(s, to)) {
+                    m = new Move(s, to);
+                    break;
+                } else {
+                    dist = 1;
+                    dir++;
+                }
+            }
+        }
     }
 }

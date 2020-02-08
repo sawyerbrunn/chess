@@ -1,6 +1,7 @@
 package chess;
 
 import java.lang.Math;
+import java.util.*;
 
 class Pawn extends Piece {
 	 /* The name of this piece */
@@ -93,14 +94,14 @@ class Pawn extends Piece {
     /* return true iff move is legal en passant */
     boolean enPassant(Square from, Square to) {
         if (color.equals("White")) {
-            return to.isEmpty() && b.get(to.getx(), to.gety() - 1).getPiece() instanceof Pawn
+            return to.gety() - 1 >= 0 && to.isEmpty() && b.get(to.getx(), to.gety() - 1).getPiece() instanceof Pawn
             && Math.abs(b.get(to.getx(), to.gety() - 1).getPiece().doubleMoved() - b.getMoveNumber()) <= 1
             && !b.get(to.getx(), to.gety() - 1).getPiece().getColor().equals("White")
             && Math.abs(from.getx() - to.getx()) == 1 && (to.gety() - from.gety() == 1);
         } else if (color.equals("Black")) {
-            return to.isEmpty() && b.get(to.getx(), to.gety() + 1).getPiece() instanceof Pawn
+            return to.gety() + 1 < b.SIZE && to.isEmpty() && b.get(to.getx(), to.gety() + 1).getPiece() instanceof Pawn
             && Math.abs(b.get(to.getx(), to.gety() + 1).getPiece().doubleMoved() - b.getMoveNumber()) <= 1
-            && !b.get(to.getx(), to.gety() - 1).getPiece().getColor().equals("Black")
+            && !b.get(to.getx(), to.gety() + 1).getPiece().getColor().equals("Black")
             && Math.abs(from.getx() - to.getx()) == 1 && (to.gety() - from.gety() == -1);
         }
         return false;
@@ -205,6 +206,73 @@ class Pawn extends Piece {
     @Override
     String getSymbol() {
         return (color.equals("White")) ? "WP" : "BP";
+    }
+
+    @Override
+    Iterator<Move> legalMoves() {
+        return new LegalMoveIterator(color);
+    }
+
+    private class LegalMoveIterator implements Iterator<Move> {
+
+        String color;
+        int dir;
+        Move m;
+        boolean doub;
+
+        LegalMoveIterator(String c) {
+            color = c;
+            dir = -1;
+            m = null;
+            doub = false;
+            toNext();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return dir < 8;
+        }
+
+        @Override 
+        public Move next() {
+            Move r = m;
+            toNext();
+            return r;
+
+        }
+
+        void toNext() {
+            dir++;
+            if (doub && dir == 6) {
+                toNext();
+                return;
+            }
+            while (dir < 8) {
+                Square to;
+                if (dir == 6 && color.equals("White")) {
+                    to = s.getDir(0, 2);
+                } else if (dir == 6 && color.equals("Black")) {
+                    to = s.getDir(4, 2);
+                } else {
+                    to = s.getDir(dir, 1);
+                }
+                if (to == null) {
+                    dir++;
+                } else if (isLegal(s, to)) {
+                    if (dir == 6 && !doub) {
+                        doub = true;
+                        m = new Move(s, to);
+                    } else if (!doub) {
+                        m = new Move(s, to);
+                    }
+                    //System.out.println("New move:");
+                    //System.out.println(m.getSymbol());
+                    break;
+                } else {
+                    dir++;
+                }
+            }
+        }
     }
 
 

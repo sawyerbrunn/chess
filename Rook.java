@@ -1,4 +1,5 @@
 package chess;
+import java.util.*;
 
 class Rook extends Piece {
 
@@ -120,5 +121,61 @@ class Rook extends Piece {
     @Override
     String getSymbol() {
         return (color.equals("White")) ? "WR" : "BR";
+    }
+
+
+    Iterator<Move> legalMoves() {
+        return new LegalMoveIterator(color);
+    }
+
+    private class LegalMoveIterator implements Iterator<Move> {
+
+        String color;
+        int dir;
+        int dist;
+        Move m;
+
+
+        LegalMoveIterator(String c) {
+            color = c;
+            dir = 0;
+            m = null;
+            dist = 0;
+            toNext();
+
+        }
+
+        @Override
+        public boolean hasNext() {
+            return dir < 8;
+            //return false;
+        }
+
+        @Override 
+        public Move next() {
+            Move r = m;
+            toNext();
+            return r;
+
+        }
+
+        void toNext() {
+            dist++;
+            while (hasNext()) {
+                Square to = s.getDir(dir, dist);
+                if (to == null) {
+                    dist = 1;
+                    dir++;
+                    dir++;
+                } else if (isLegal(s, to)) {
+                    m = new Move(s, to);
+                    break;
+                } else {
+                    dist = 1;
+                    dir++;
+                    dir++;
+                }
+            }
+        }
     }
 }
