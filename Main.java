@@ -27,6 +27,7 @@ class Main {
 	}
 
 	public static void main(String[] args) {
+		Gui gui = new Gui();
 		Board b = new Board();
 		Player white;
 		Player black;
@@ -68,7 +69,7 @@ class Main {
 				System.out.println("Type reset for a new game.");
 				move = s.nextLine();
 				if (move.toUpperCase().equals("EXIT")) {
-					system.exit(1);
+					System.exit(1);
 					return;
 				}
 				if (move.toUpperCase().equals("RESET")) {
