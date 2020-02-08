@@ -138,7 +138,7 @@ class King extends Piece {
         1) the square is empty, and
         2) the square is not attacked by any of my opponent's pieces.
         */
-        System.out.println("sanity check");
+        //System.out.println("sanity check");
         if (from.getx() < to.getx()) {
             /* casting right (SHORT CASTLE) */
             for (int x = from.getx() + 1; x <= to.getx(); x++) {
@@ -151,7 +151,7 @@ class King extends Piece {
             return true;
         } else {
             /* casting left (LONG CASTLE) */
-            for (int x = from.getx(); x >= to.getx(); x--) {
+            for (int x = from.getx() - 1; x >= to.getx(); x--) {
                 if (!b.get(x, from.gety()).isEmpty() || b.attacked(b.get(x, from.gety()), color)) {
                     return false;
                 }

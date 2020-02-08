@@ -84,6 +84,17 @@ class Board {
 	}
 
 	String winner() {
+		if (whitePieces.size() == 1 && blackPieces.size() == 1) {
+			return "Draw";
+		}
+		Iterator<Move> currentMoves = allMoves();
+		if (!currentMoves.hasNext()) {
+			if (inCheck(getTurn())) {
+				winner = getOtherTurn();
+				return winner;
+			}
+			return "Draw";
+		}
 		return null;
 	}
 

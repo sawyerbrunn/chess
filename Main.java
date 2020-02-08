@@ -49,7 +49,7 @@ class Main {
 				l.add(it.next());
 			}
 			for (int i = 0; i < l.size(); i++) {
-				System.out.println(l.get(i).getSymbol());
+				//System.out.println(l.get(i).getSymbol());
 			}
 			/* END TEST */
 			System.out.println("Enter " + b.getTurn() + "'s Move:");
@@ -58,7 +58,7 @@ class Main {
 				System.exit(1);
 			} else if (move.toUpperCase().equals("RESET")) {
 				b = new Board();
-				System.out.println(b.toString());
+				//System.out.println(b.toString());
 				continue;
 			}
 			String from = move.substring(0, 2).toUpperCase();
@@ -106,6 +106,23 @@ class Main {
 					}
 				}
 				legal = true;
+			}
+			String winner = b.winner();
+			while (winner != null) {
+				System.out.println(b.toString());
+				if (winner.equals("Draw")) {
+					System.out.println("The game is a draw.");
+				} else {
+					System.out.println("Checkmate! " + winner + " wins.");
+				}
+				System.out.println("Type reset for a new game.");
+				move = s.nextLine();
+				if (move.toUpperCase().equals("RESET")) {
+					b = new Board();
+					break;
+				} else {
+					System.out.println("Unrecognized command.");
+				}
 			}
 		}
 
