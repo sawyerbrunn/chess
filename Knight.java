@@ -41,6 +41,16 @@ class Knight extends Piece {
     }
 
     @Override
+    void setSquare(Square sq) {
+        s = sq;
+    }
+
+    @Override
+    Square getSquare() {
+        return s;
+    }
+
+    @Override
     void copiedMove(Square from, Square to) {
         s.empty();
         to.toEmpty();
@@ -112,8 +122,7 @@ class Knight extends Piece {
 
         @Override
         public boolean hasNext() {
-            //return dir < 8;
-            return false;
+            return dir < 8;
         }
 
         @Override 
@@ -127,7 +136,7 @@ class Knight extends Piece {
         void toNext() {
             dir++;
             while (dir < 8) {
-                Square to = s.getDir(dir, 1);
+                Square to = s.getKnightDir(dir);
                 if (to == null) {
                     dir++;
                 } else if (isLegal(s, to)) {

@@ -86,6 +86,16 @@ class Rook extends Piece {
     }
 
     @Override
+    Square getSquare() {
+        return s;
+    }
+
+    @Override
+    void setSquare(Square sq) {
+        s = sq;
+    }
+
+    @Override
     void copiedMove(Square from, Square to) {
         s.empty();
         to.toEmpty();

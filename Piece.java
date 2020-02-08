@@ -46,6 +46,8 @@ abstract class Piece {
         
     }
 
+    abstract void setSquare(Square sq);
+
     /* Checks if moving from FROM to TO is allowed. */
     abstract boolean isLegal(Square from, Square to);
 

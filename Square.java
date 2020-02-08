@@ -105,6 +105,39 @@ class Square {
 		return j;
 	}
 
+	Square getKnightDir(int dir) {
+		Square r = null;
+		switch (dir) {
+			case 0:
+				r = (getx() - 1 >= 0 && gety() + 2 < b.SIZE) ? b.get(getx() - 1, gety() + 2) : null;
+				break;
+			case 1:
+				r = (getx() + 1 < b.SIZE && gety() + 2 < b.SIZE) ? b.get(getx() + 1, gety() + 2) : null;
+				break;
+			case 2:
+				r = (getx() + 2 < b.SIZE && gety() + 1 < b.SIZE) ? b.get(getx() + 2, gety() + 1) : null;
+				break;
+			case 3:
+				r = (getx() + 2 < b.SIZE && gety() - 1 >= 0) ? b.get(getx() + 2, gety() - 1) : null;
+				break;
+			case 4:
+				r = (getx() - 1 >= 0 && gety() - 2 >= 0) ? b.get(getx() - 1, gety() - 2) : null;
+				break;
+			case 5:
+				r = (getx() + 1 < b.SIZE && gety() - 2 >= 0) ? b.get(getx() + 1, gety() - 2) : null;
+				break;
+			case 6:
+				r = (getx() - 2 >= 0 && gety() - 1 >= 0) ? b.get(getx() - 2, gety() - 1) : null;
+				break;
+			case 7:
+				r = (getx() - 2 >= 0 && gety() + 1 < b.SIZE) ? b.get(getx() - 2, gety() + 1) : null;
+				break;
+			default:
+				break;
+		}
+		return r;
+	}
+
 	Square getDir(int dir, int dist) {
 		Square r = null;
 		switch (dir) {

@@ -26,6 +26,16 @@ class Nopiece extends Piece {
     }
 
     @Override
+    Square getSquare() {
+        return s;
+    }
+
+    @Override
+    void setSquare(Square sq) {
+        s = sq;
+    }
+
+    @Override
     boolean attacks(Square sq) {
         return false;
         

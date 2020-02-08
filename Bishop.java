@@ -108,6 +108,16 @@ class Bishop extends Piece {
     }
 
     @Override
+    void setSquare(Square sq) {
+        s = sq;
+    }
+
+    @Override
+    Square getSquare() {
+        return s;
+    }
+
+    @Override
     String getColor() {
         return color;
     }

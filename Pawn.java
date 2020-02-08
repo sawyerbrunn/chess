@@ -209,6 +209,16 @@ class Pawn extends Piece {
     }
 
     @Override
+    Square getSquare() {
+        return s;
+    }
+
+    @Override
+    void setSquare(Square sq) {
+        s = sq;
+    }
+
+    @Override
     Iterator<Move> legalMoves() {
         return new LegalMoveIterator(color);
     }

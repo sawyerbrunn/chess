@@ -200,6 +200,17 @@ class Board {
 		return true;
 	}
 
+	/* return true iff COLOR's square s is attacked by an opponent's piece. */
+	boolean attacked(Square s, String color) {
+		List<Piece> pieces = (color.equals("White")) ? blackPieces : whitePieces;
+		for (int i = 0; i < pieces.size(); i++) {
+			if (pieces.get(i).attacks(s)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/* Returns true iff color's king is currently in check */
 	boolean inCheck(String color) {
 		Board b = new Board(this);
@@ -246,7 +257,7 @@ class Board {
 		if (b.getTurn() == "White") {
 			for (int i = 0; i < b.blackPieces.size(); i++) {
 				if (b.blackPieces.get(i).attacks(b.wking)) {
-					System.out.println("This move would place White in check.");
+					//System.out.println("This move would place White in check.");
 					return false;
 				}
 			}
@@ -257,7 +268,7 @@ class Board {
 			for (int i = 0; i < b.whitePieces.size(); i++) {
 				//System.out.println("checking " + whitePieces.get(i).getSymbol());
 				if (b.whitePieces.get(i).attacks(b.bking)) {
-					System.out.println("This move would place Black in check.");
+					//System.out.println("This move would place Black in check.");
 					return false;
 				}
 			}
