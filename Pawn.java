@@ -271,9 +271,9 @@ class Pawn extends Piece {
                 } else if (isLegal(s, to)) {
                     if (dir == 6 && !doub) {
                         doub = true;
-                        m = new Move(s, to);
+                        m = new Move(s, to, b);
                     } else if (!doub) {
-                        m = new Move(s, to);
+                        m = new Move(s, to, b);
                     }
                     //System.out.println("New move:");
                     //System.out.println(m.getSymbol());

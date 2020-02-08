@@ -208,7 +208,7 @@ class Queen extends Piece {
                     dist = 1;
                     dir++;
                 } else if (isLegal(s, to)) {
-                    m = new Move(s, to);
+                    m = new Move(s, to, b);
                     break;
                 } else {
                     dist = 1;

@@ -26,7 +26,66 @@ class Main {
 		}
 	}
 
+	public static void main(String[] args) {
+		Board b = new Board();
+		Player white;
+		Player black;
+		if (args.length == 0) {
+			white = new ManualPlayer(b, "White");
+			black = new ManualPlayer(b, "Black");
+		} else if (args.length == 1 && args[0].toUpperCase().equals("AI")) {
+			white = new ManualPlayer(b, "White");
+			black = new AIPlayer0(b, "Black");
+		} else {
+			return;
+		}
+		String out;
+		System.out.println(b.toString());
+		while(true) {
+			out = (b.getTurn().equals("White")) ? white.makeMove() : black.makeMove();
+			if (out.toUpperCase().equals("EXIT")) {
+				System.exit(1);
+				return;
+			} else if (out.toUpperCase().equals("RESET")) {
+				b.reset();
+				System.out.println(b.toString());
+				continue;
+			} else if (out.toUpperCase().equals("ILLEGAL")) {
+				System.out.println(b.toString());
+				System.out.println("Please enter a legal move");
+				continue;
+			}
+			String winner = b.winner();
+			while (winner != null) {
+				String move;
+				Scanner s = new Scanner(System.in);
+				System.out.println(b.toString());
+				if (winner.equals("Draw")) {
+					System.out.println("The game is a draw.");
+				} else {
+					System.out.println("Checkmate! " + winner + " wins.");
+				}
+				System.out.println("Type reset for a new game.");
+				move = s.nextLine();
+				if (move.toUpperCase().equals("EXIT")) {
+					system.exit(1);
+					return;
+				}
+				if (move.toUpperCase().equals("RESET")) {
+					b = new Board();
+					break;
+				} else {
+					System.out.println("Unrecognized command.");
+				}
+			}
+			System.out.println(b.toString());
+		}
+	}
 
+
+
+
+/*
 	public static void main(String[] args) {
 		Board b = new Board();
 		Scanner s = new Scanner(System.in);
@@ -37,7 +96,6 @@ class Main {
 			if (legal) {
 				System.out.println(b.toString());
 			}
-			/* TESTING ITERATORS */
 			//System.out.println("finding moves");
 			for (int i = 0; i < b.whitePieces.size(); i++) {
 				//System.out.println(b.whitePieces.get(i).getSymbol());
@@ -51,7 +109,6 @@ class Main {
 			for (int i = 0; i < l.size(); i++) {
 				//System.out.println(l.get(i).getSymbol());
 			}
-			/* END TEST */
 			System.out.println("Enter " + b.getTurn() + "'s Move:");
 			String move = s.nextLine();
 			if (move.toUpperCase().equals("EXIT")) {
@@ -83,7 +140,7 @@ class Main {
 						b.whitePieces.remove(sq.getPiece());
 					} else {
 						b.blackPieces.remove(sq.getPiece());
-				}
+					}
 					System.out.println("Promote Pawn to?");
 					System.out.println("Enter one of: Q (Queen), K (Knight), R (Rook), B (Bishop)");
 					while (true) {
@@ -126,6 +183,8 @@ class Main {
 			}
 		}
 
+
 		
 	}
+	*/
 }

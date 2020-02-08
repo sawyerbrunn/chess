@@ -30,9 +30,9 @@ class King extends Piece {
     boolean move(Square from, Square to) {
     	if (isLegal(from, to)) {
             if (canCastle(from, to)) {
-                System.out.println(to.getx() + 1);
-                System.out.println(to.gety());
-                System.out.println(b.get(to.getx() + 1, to.gety()).getPiece().getSymbol());
+                //System.out.println(to.getx() + 1);
+                //System.out.println(to.gety());
+                //System.out.println(b.get(to.getx() + 1, to.gety()).getPiece().getSymbol());
                 Piece rook = (from.getx() < to.getx()) ? b.get(to.getx() + 1, to.gety()).getPiece() : b.get(to.getx() - 2, to.gety()).getPiece();
                 s.empty();
                 s = to;
@@ -231,7 +231,7 @@ class King extends Piece {
                     dist = 1;
                     dir++;
                 } else if (isLegal(s, to)) {
-                    m = new Move(s, to);
+                    m = new Move(s, to, b);
                     break;
                 } else {
                     dist = 1;

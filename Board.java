@@ -83,6 +83,10 @@ class Board {
 
 	}
 
+	void reset() {
+		init();
+	}
+
 	String winner() {
 		if (whitePieces.size() == 1 && blackPieces.size() == 1) {
 			return "Draw";
@@ -341,6 +345,18 @@ class Board {
         r += "     A  B  C  D  E  F  G  H  \n";
         return r;
 
+    }
+
+    void promotePawn(Square s, String color, String promo) {
+    	if (promo.toUpperCase().equals("Q")) {
+			put(s, new Queen(s, this, color));
+		} else if ((promo.toUpperCase().equals("K"))) {
+			put(s, new Knight(s, this, color));
+		} else if ((promo.toUpperCase().equals("R"))) {
+			put(s, new Rook(s, this, color));
+		} else if ((promo.toUpperCase().equals("B"))) {
+			put(s, new Bishop(s, this, color));
+		}
     }
 
     int getMoveNumber() {
