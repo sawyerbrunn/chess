@@ -25,9 +25,10 @@ class Move {
 		from.getPiece().move(from, to);
 		if (to.getPiece() instanceof Pawn && to.getPiece().getColor().equals("White")) {
 			return to.gety() == b.SIZE;
-		} else {
+		} else if ((to.getPiece() instanceof Pawn && to.getPiece().getColor().equals("Black"))) {
 			return to.gety() == 0;
 		}
+		return false;
 	}
 
 	/*

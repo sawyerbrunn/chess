@@ -6,13 +6,16 @@ class Square {
 	private int i;
 	private int j;
 	Board b;
+	boolean clicked;
 
 	Square(Square s, Board brd) {
 		b = brd;
+		clicked = false;
 		copy(s);
 	}
 
 	void copy(Square model) {
+		clicked = model.clicked;
 		color = model.color;
 		i = model.getx();
 		j = model.gety();
@@ -50,6 +53,7 @@ class Square {
 		i = x;
 		j = y;
 		b = brd;
+		clicked = false;
 		piece = new Nopiece(brd);
 		if (x % 2 == 0 && y % 2 == 0) {
 			color = "Dark";
@@ -60,6 +64,18 @@ class Square {
 		} else {
 			color = "Dark";
 		}
+	}
+
+	void click() {
+		clicked = true;
+	}
+
+	void unclick() {
+		clicked = false;
+	}
+
+	boolean isclicked() {
+		return clicked;
 	}
 
 	String getColor() {
@@ -103,6 +119,30 @@ class Square {
 
 	int gety() {
 		return j;
+	}
+
+	String getSymbol() {
+		return getStr(getx()) + String.valueOf(gety() + 1);
+	}
+
+	static String getStr(int c) {
+		if (c == 0) {
+			return "a";
+		} else if (c == 1) {
+			return "b";
+		} else if (c == 2) {
+			return "c";
+		} else if (c == 3) {
+			return "d";
+		} else if (c == 4) {
+			return "e";
+		} else if (c == 5) {
+			return "f";
+		} else if (c == 6) {
+			return "g";
+		} else {
+			return "h";
+		}
 	}
 
 	Square getKnightDir(int dir) {

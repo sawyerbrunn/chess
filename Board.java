@@ -232,7 +232,7 @@ class Board {
 		Board b = new Board(this);
 		if (color.equals("White")) {
 			for (int i = 0; i < b.blackPieces.size(); i++) {
-				if (b.blackPieces.get(i).attacks(b.wking)) {
+				if (!(b.blackPieces.get(i) instanceof King) && b.blackPieces.get(i).attacks(b.wking)) {
 					//System.out.println("This move would place White in check.");
 					return true;
 				}
@@ -240,7 +240,7 @@ class Board {
 			return false;
 		} else {
 			for (int i = 0; i < b.whitePieces.size(); i++) {
-				if (b.whitePieces.get(i).attacks(b.bking)) {
+				if (!(b.whitePieces.get(i) instanceof King) && b.whitePieces.get(i).attacks(b.bking)) {
 					//System.out.println("This move would place Black in check.");
 					return true;
 				}
@@ -349,6 +349,11 @@ class Board {
     }
 
     void promotePawn(Square s, String color, String promo) {
+    	if (color.equals("White")) {
+    		whitePieces.remove(s.getPiece());
+    	} else {
+    		blackPieces.remove(s.getPiece());
+    	}
     	if (promo.toUpperCase().equals("Q")) {
 			put(s, new Queen(s, this, color));
 		} else if ((promo.toUpperCase().equals("K"))) {

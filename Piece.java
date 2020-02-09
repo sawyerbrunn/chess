@@ -64,6 +64,8 @@ abstract class Piece {
         return null;
     }
 
+    boolean canPromote() { return false; }
+
 }
 
 
