@@ -33,6 +33,7 @@ class Bishop extends Piece {
     		s.put(this);
             b.turn();
             hasMoved = true;
+            b.addMove(new Move(from, to, b));
             return true;
     	}
         return false;

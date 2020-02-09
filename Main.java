@@ -28,7 +28,7 @@ class Main {
 
 	public static void main(String[] args) {
 		Board b = new Board();
-		Gui gui = new Gui(b, null, new AIPlayer0(b, "Black"));
+		Gui gui = new Gui(b, null, null);
 		Player white;
 		Player black;
 		if (args.length == 0) {

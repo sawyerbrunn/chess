@@ -35,6 +35,8 @@ class Board {
 	/* The number of moves made by white */
 	public int whiteMoves;
 
+	List<Move> log;
+
 	Square promote;
 
 	Square wking;
@@ -83,6 +85,17 @@ class Board {
 
 	}
 
+	Move getLastMove() {
+		if (log.size() == 0) {
+			return null;
+		}
+		return log.get(log.size() - 1);
+	}
+
+	void addMove(Move m) {
+		log.add(m);
+	}
+
 	void reset() {
 		init();
 	}
@@ -104,6 +117,7 @@ class Board {
 
 	/* Sets up a new chess board in initial position */
 	void init() {
+		log = new ArrayList<Move>();
 		doNoCheck = true;
 		wking = null;
 		bking = null;

@@ -48,6 +48,7 @@ class King extends Piece {
                     b.bking = s;
                 }
                 b.turn();
+                b.addMove(new Move(from, to, b));
                 return true;
             }
     		s.empty();
@@ -61,6 +62,7 @@ class King extends Piece {
             } else {
                 b.bking = s;
             }
+            b.addMove(new Move(from, to, b));
             return true;
     	}
         return false;

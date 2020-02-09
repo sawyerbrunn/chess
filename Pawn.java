@@ -57,6 +57,7 @@ class Pawn extends Piece {
             }
             b.turn();
             hasMoved = true;
+            b.addMove(new Move(from, to, b));
             return true;
         } 
         if (doubleMove(from, to)) {
@@ -71,6 +72,7 @@ class Pawn extends Piece {
         if (canPromote(to)) {
             b.promote = to;
         }
+        b.addMove(new Move(from, to, b));
         return true;
     }
 
