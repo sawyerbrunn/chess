@@ -27,8 +27,8 @@ class Main {
 	}
 
 	public static void main(String[] args) {
-		Gui gui = new Gui();
 		Board b = new Board();
+		Gui gui = new Gui(b);
 		Player white;
 		Player black;
 		if (args.length == 0) {

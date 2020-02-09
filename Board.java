@@ -211,6 +211,7 @@ class Board {
 		return r;
 	}
 
+	/* For tesing */
 	boolean noCheck() {
 		return true;
 	}
