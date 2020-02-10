@@ -25,24 +25,20 @@ class Square {
 			piece = new Nopiece(b); 
 		} else if (toCopy instanceof Bishop) {
 			piece = new Bishop(this, b, toCopy.getColor());
-			piece.hasMoved = toCopy.hasMoved;
 		} else if (toCopy instanceof Rook) {
 			piece = new Rook(this, b, toCopy.getColor());
-			piece.hasMoved = toCopy.hasMoved();
 		} else if (toCopy instanceof King) {
 			piece = new King(this, b, toCopy.getColor());
-			piece.hasMoved = toCopy.hasMoved;
 		} else if (toCopy instanceof Knight) {
 			piece = new Knight(this, b, toCopy.getColor());
-			piece.hasMoved = toCopy.hasMoved;
 		} else if (toCopy instanceof Pawn) {
 			piece = new Pawn(this, b, toCopy.getColor());
 			piece.hasMoved = toCopy.hasMoved;
-			piece.doubleMoved = toCopy.doubleMoved;
+			((Pawn) piece).setDoubleMoved(((Pawn) toCopy).doubleMoved());
 		} else if (toCopy instanceof Queen) {
 			piece = new Queen(this, b, toCopy.getColor());
-			piece.hasMoved = toCopy.hasMoved;
 		}
+		piece.setHasMoved(toCopy.hasMoved());
 		//System.out.println(piece.getColor());
 
 	}
@@ -105,6 +101,7 @@ class Square {
 
 	void put(Piece p) {
 		piece = p;
+		//System.out.println("Putting piece of this color!:");
 		//System.out.println(p.getColor());
 		if (p.getColor().equals("White") && !b.whitePieces.contains(p)) {
 			b.whitePieces.add(p);

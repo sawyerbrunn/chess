@@ -27,51 +27,15 @@ class King extends Piece {
     }
 
     @Override
-    boolean move(Square from, Square to) {
-    	if (isLegal(from, to)) {
-            if (canCastle(from, to)) {
-                //System.out.println(to.getx() + 1);
-                //System.out.println(to.gety());
-                //System.out.println(b.get(to.getx() + 1, to.gety()).getPiece().getSymbol());
-                Piece rook = (from.getx() < to.getx()) ? b.get(to.getx() + 1, to.gety()).getPiece() : b.get(to.getx() - 2, to.gety()).getPiece();
-                s.empty();
-                s = to;
-                s.put(this);
-                hasMoved = true;
-                rook.getSquare().empty();
-                rook.setSquare((to.getx() > from.getx()) ? b.get(to.getx() - 1, to.gety()) : b.get(to.getx() + 1, to.gety()));
-                rook.getSquare().put(rook);
-                rook.hasMoved = true;
-                if (color.equals("White")) {
-                    b.wking = s;
-                }   else {
-                    b.bking = s;
-                }
-                b.turn();
-                b.addMove(new Move(from, to, b));
-                return true;
-            }
-    		s.empty();
-    		to.toEmpty();
-    		s = to;
-    		s.put(this);
-            b.turn();
-            hasMoved = true;
-            if (color.equals("White")) {
-                b.wking = s;
-            } else {
-                b.bking = s;
-            }
-            b.addMove(new Move(from, to, b));
-            return true;
-    	}
-        return false;
+    boolean move(Move m) {
+    	return m.makeMove();
     }
 
     @Override
     void setSquare(Square sq) {
         s = sq;
     }
+
 
     @Override
     Square getSquare() {
@@ -90,14 +54,15 @@ class King extends Piece {
 
     @Override
     boolean isLegal(Square from, Square to) {
+        //System.out.println(canCastle(from, to));
         if (!from.getPiece().getColor().equals(b.getTurn())) {
+            return false;
+        }
+        if (to.getPiece().getColor().equals(b.getTurn())) {
             return false;
         }
         if (canCastle(from, to)) {
             return true;
-        }
-        if (to.getPiece().getColor().equals(b.getTurn())) {
-            return false;
         }
         if (Math.abs(from.getx() - to.getx()) > 1 || Math.abs(from.gety() - to.gety()) > 1) {
             return false;
@@ -106,6 +71,9 @@ class King extends Piece {
     }
 
     boolean canCastle(Square from, Square to) {
+        if (to.getPiece().getColor().equals(b.getTurn())) {
+            return false;
+        }
         if (hasMoved()) {
             return false;
         } else if (from.gety() != to.gety()) {
@@ -145,8 +113,8 @@ class King extends Piece {
             /* casting right (SHORT CASTLE) */
             for (int x = from.getx() + 1; x <= to.getx(); x++) {
                 if (!b.get(x, from.gety()).isEmpty() || b.attacked(b.get(x, from.gety()), color)) {
-                    System.out.println(!b.get(x, from.gety()).isEmpty());
-                    System.out.println(b.attacked(b.get(x, from.gety()), color));
+                    //System.out.println(!b.get(x, from.gety()).isEmpty());
+                    //System.out.println(b.attacked(b.get(x, from.gety()), color));
                     return false;
                 }
             }
@@ -180,6 +148,11 @@ class King extends Piece {
     @Override
     String getColor() {
         return color;
+    }
+
+    @Override
+    void setHasMoved(boolean b) {
+        hasMoved = b;
     }
 
     @Override

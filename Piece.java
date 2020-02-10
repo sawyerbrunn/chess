@@ -20,7 +20,7 @@ abstract class Piece {
     int doubleMoved;
 
     /* Moves me from FROM to TO */
-    abstract boolean move(Square from, Square to);
+    abstract boolean move(Move m);
 
     int doubleMoved() {
         return -1;
@@ -54,6 +54,8 @@ abstract class Piece {
     /* Checks if I've moved */
     abstract boolean hasMoved();
 
+    abstract void setHasMoved(boolean b);
+
     abstract String getSymbol();
 
     String getColor() {
@@ -64,7 +66,7 @@ abstract class Piece {
         return null;
     }
 
-    boolean canPromote() { return false; }
+    //boolean canPromote() { return false; }
 
 }
 

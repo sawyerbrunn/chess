@@ -27,18 +27,8 @@ class Knight extends Piece {
     }
 
     @Override
-    boolean move(Square from, Square to) {
-    	if (isLegal(from, to)) {
-    		s.empty();
-    		to.toEmpty();
-    		s = to;
-    		s.put(this);
-            b.turn();
-            hasMoved = true;
-            b.addMove(new Move(from, to, b));
-            return true;
-    	}
-        return false;
+    boolean move(Move m) {
+    	return m.makeMove();
     }
 
     @Override
@@ -49,6 +39,11 @@ class Knight extends Piece {
     @Override
     Square getSquare() {
         return s;
+    }
+
+    @Override
+    void setHasMoved(boolean b) {
+        hasMoved = b;
     }
 
     @Override

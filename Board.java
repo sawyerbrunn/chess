@@ -82,6 +82,11 @@ class Board {
 		winner = null;
 		blackMoves = model.blackMoves;
 		whiteMoves = model.whiteMoves;
+		//log = model.log;
+		log = new ArrayList<Move>();
+		for (int i = 0; i < model.log.size(); i++) {
+			log.add(new Move(model.log.get(i), this));
+		}
 
 	}
 
@@ -98,6 +103,36 @@ class Board {
 
 	void reset() {
 		init();
+	}
+
+	/** Undoes the last move made on this board */
+	void undo() {
+		Move lastMove = new Move(log.get(log.size() - 1), this);
+
+		/* toEmpty() the from square */
+		get(lastMove.getTo().getx(), lastMove.getTo().gety()).toEmpty();
+
+		/* toEmpty() the from square. */
+		get(lastMove.getFrom().getx(), lastMove.getFrom().gety()).toEmpty();
+
+		/* put the moving piece on from */
+		put(lastMove.getFrom().getx(), lastMove.getFrom().gety(), lastMove.moving());
+		
+		/* Put the captured piece back on To, if needed */
+		if (lastMove.captured() != null) {
+			put(lastMove.getTo().getx(), lastMove.getTo().gety(), lastMove.captured());
+			lastMove.captured().setSquare(get(lastMove.getTo().getx(), lastMove.getTo().gety()));
+		}
+		turn = getOtherTurn();
+		if (getTurn().equals("White")) {
+			whiteMoves--;
+		} else {
+			blackMoves--;
+		}
+		// HANDLE PAWN PROMOTIONS
+		// HANDLE KING SQUARES
+		// HANDLE EN PASSANT
+		log.remove(log.get(log.size() - 1));
 	}
 
 	String winner() {

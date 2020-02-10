@@ -42,38 +42,8 @@ class Pawn extends Piece {
     }
 
     @Override
-    boolean move(Square from, Square to) {
-    	if (!isLegal(from, to)) {
-    		return false;
-    	}
-        if (enPassant(from, to)) {
-            s.empty();
-            s = to;
-            s.put(this);
-            if (color == "White") {
-                b.get(to.getx(), to.gety() - 1).toEmpty();
-            } else {
-                b.get(to.getx(), to.gety() + 1).toEmpty();
-            }
-            b.turn();
-            hasMoved = true;
-            b.addMove(new Move(from, to, b));
-            return true;
-        } 
-        if (doubleMove(from, to)) {
-            doubleMoved = b.getMoveNumber();
-        }
-        s.empty();
-        to.toEmpty();
-        s = to;
-        s.put(this);
-        b.turn();
-        hasMoved = true;
-        if (canPromote(to)) {
-            b.promote = to;
-        }
-        b.addMove(new Move(from, to, b));
-        return true;
+    boolean move(Move m) {
+    	return m.makeMove();
     }
 
     boolean canPromote(Square s) {
@@ -87,6 +57,10 @@ class Pawn extends Piece {
     /* returns when I double moved */
     int doubleMoved() {
         return doubleMoved;
+    }
+
+    void setDoubleMoved(int i) {
+        doubleMoved = i;
     }
 
     boolean doubleMove(Square from, Square to) {
@@ -213,6 +187,11 @@ class Pawn extends Piece {
     @Override
     Square getSquare() {
         return s;
+    }
+
+    @Override
+    void setHasMoved(boolean b) {
+        hasMoved = b;
     }
 
     @Override

@@ -42,7 +42,12 @@ class Nopiece extends Piece {
     }
 
     @Override
-    boolean move(Square from, Square to) {
+    void setHasMoved(boolean b) {
+        hasMoved = b;
+    }
+
+    @Override
+    boolean move(Move m) {
     	return false;
     }
 
