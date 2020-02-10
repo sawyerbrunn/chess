@@ -1,20 +1,30 @@
 package chess;
 
 class Move {
-	Square from;
-	Square to;
-	Board b;
+	private Square from;
+	private Square to;
+	private Board b;
+	/* The captured piece. If this move is undone, this piece belongs on:
+	1) TO if this move is NOT special
+	2) a CORNER SQUARE is this move is special and a king is moving (captured holds the rook)
+	3) a PAST SQUARE is this move is special and a pawn is moving (captured holds the pawn taken en passant)
+	*/
 	private Piece captured;
+	/* The old hasMoved */
 	private boolean oldHasMoved;
+	/* The piece that is moving */	
 	private Piece moving;
-	private boolean castle;
+	/* Tracks if this move is a castle or an en passant capture */
+	private boolean special;
+	/* Used to track en passant captured pieces */
+	String color;
 
 	Move(Square f, Square t, Board brd) {
 		from = f;
 		to = t;
 		b = brd;
 		oldHasMoved = false;
-		castle = false;
+		special = false;
 		//System.out.println("New move!");
 	}
 
@@ -22,6 +32,7 @@ class Move {
 		b = brd;
 		from = b.get(m.getFrom().getx(), m.getFrom().gety());
 		to = b.get(m.getTo().getx(), m.getTo().gety());
+		special = m.isSpecial();
 		copyCapturedPiece(m);
 		copyMovingPiece(m);
 	}
@@ -35,6 +46,7 @@ class Move {
 			moving = new Knight(from, b, model.moving().getColor());
 		} else if (model.moving() instanceof Pawn) {
 			moving = new Pawn(from, b, model.moving().getColor());
+			((Pawn) moving).setDoubleMoved(model.moving().doubleMoved());
 		} else if (model.moving() instanceof Queen) {
 			moving = new Queen(from, b, model.moving().getColor());
 		} else if (model.moving() instanceof Rook) {
@@ -54,6 +66,7 @@ class Move {
 			captured = new Knight(from, b, model.captured().getColor());
 		} else if (model.captured() instanceof Pawn) {
 			captured = new Pawn(from, b, model.captured().getColor());
+			((Pawn) captured).setDoubleMoved(model.captured().doubleMoved());
 		} else if (model.captured() instanceof Queen) {
 			captured = new Queen(from, b, model.captured().getColor());
 		} else if (model.captured() instanceof Rook) {
@@ -62,6 +75,10 @@ class Move {
 		if (captured != null) {
 			captured.setHasMoved(model.captured().hasMoved());
 		}
+	}
+
+	boolean isSpecial() {
+		return special;
 	}
 
 	Piece moving() {
@@ -101,10 +118,13 @@ class Move {
             moving.setSquare(to);
             to.put(moving);
             if (moving.getColor().equals("White")) {
+            	captured = b.get(to.getx(), to.gety() - 1).getPiece();
                 b.get(to.getx(), to.gety() - 1).toEmpty();
             } else {
+            	captured = b.get(to.getx(), to.gety() - 1).getPiece();
                 b.get(to.getx(), to.gety() + 1).toEmpty();
             }
+            special = true;
             b.turn();
             moving.setHasMoved(true);
             b.addMove(this);
@@ -121,6 +141,7 @@ class Move {
         moving.setHasMoved(true);
         if (((Pawn) moving).canPromote(to)) {
             b.promote = to;
+            // NEED SPECIAL HERE?
         }
         b.addMove(this);
         return true;
@@ -143,6 +164,7 @@ class Move {
                 }
                 b.turn();
                 b.addMove(this);
+                special = true;
                 return true;
             }
     		from.empty();

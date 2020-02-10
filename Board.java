@@ -108,20 +108,52 @@ class Board {
 	/** Undoes the last move made on this board */
 	void undo() {
 		Move lastMove = new Move(log.get(log.size() - 1), this);
+		if (lastMove.isSpecial()) {
+			if (lastMove.moving() instanceof King) {
+				// Handle castling
+				get(lastMove.getTo().getx(), lastMove.getTo().gety()).toEmpty();
+				get(lastMove.getFrom().getx(), lastMove.getFrom().gety()).toEmpty();
+				put(lastMove.getFrom().getx(), lastMove.getFrom().gety(), lastMove.moving());
+				if (lastMove.getFrom().getx() < lastMove.getTo().getx()) {
+					// was a short castle, handle rook
+					get(lastMove.getTo().getx() - 1, lastMove.getTo().gety()).toEmpty();
+					put(lastMove.getTo().getx() + 1, lastMove.getTo().gety(), lastMove.captured());
+					lastMove.captured().setSquare(get(lastMove.getTo().getx() + 1, lastMove.getTo().gety()));
+				} else {
+					// was a long castle, handle rook
+					get(lastMove.getTo().getx() + 1, lastMove.getTo().gety()).toEmpty();
+					put(lastMove.getTo().getx() - 2, lastMove.getTo().gety(), lastMove.captured());
+					lastMove.captured().setSquare(get(lastMove.getTo().getx() - 2, lastMove.getTo().gety()));
+				}
+			} else if (lastMove.moving() instanceof Pawn) {
+				// Handle en passant
+				get(lastMove.getTo().getx(), lastMove.getTo().gety()).toEmpty();
+				get(lastMove.getFrom().getx(), lastMove.getFrom().gety()).toEmpty();
+				put(lastMove.getFrom().getx(), lastMove.getFrom().gety(), lastMove.moving());
+				if (lastMove.captured() != null && lastMove.moving().getColor().equals("White")) {
+					put(lastMove.getTo().getx(), lastMove.getTo().gety() - 1, lastMove.captured());
+					lastMove.captured().setSquare(get(lastMove.getTo().getx(), lastMove.getTo().gety() - 1));
+				} else if (lastMove.captured() != null && lastMove.moving().getColor().equals("Black")) {
+					put(lastMove.getTo().getx(), lastMove.getTo().gety() + 1, lastMove.captured());
+					lastMove.captured().setSquare(get(lastMove.getTo().getx(), lastMove.getTo().gety() + 1));
+				}
+			}
+		} else {
 
-		/* toEmpty() the from square */
-		get(lastMove.getTo().getx(), lastMove.getTo().gety()).toEmpty();
+			/* toEmpty() the To square */
+			get(lastMove.getTo().getx(), lastMove.getTo().gety()).toEmpty();
 
-		/* toEmpty() the from square. */
-		get(lastMove.getFrom().getx(), lastMove.getFrom().gety()).toEmpty();
+			/* toEmpty() the From square. */
+			get(lastMove.getFrom().getx(), lastMove.getFrom().gety()).toEmpty();
 
-		/* put the moving piece on from */
-		put(lastMove.getFrom().getx(), lastMove.getFrom().gety(), lastMove.moving());
-		
-		/* Put the captured piece back on To, if needed */
-		if (lastMove.captured() != null) {
-			put(lastMove.getTo().getx(), lastMove.getTo().gety(), lastMove.captured());
-			lastMove.captured().setSquare(get(lastMove.getTo().getx(), lastMove.getTo().gety()));
+			/* put the moving piece on from */
+			put(lastMove.getFrom().getx(), lastMove.getFrom().gety(), lastMove.moving());
+
+			/* Put the captured piece back on To, if needed */
+			if (lastMove.captured() != null) {
+				put(lastMove.getTo().getx(), lastMove.getTo().gety(), lastMove.captured());
+				lastMove.captured().setSquare(get(lastMove.getTo().getx(), lastMove.getTo().gety()));
+			}
 		}
 		turn = getOtherTurn();
 		if (getTurn().equals("White")) {
