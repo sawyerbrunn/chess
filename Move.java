@@ -121,7 +121,7 @@ class Move {
             	captured = b.get(to.getx(), to.gety() - 1).getPiece();
                 b.get(to.getx(), to.gety() - 1).toEmpty();
             } else {
-            	captured = b.get(to.getx(), to.gety() - 1).getPiece();
+            	captured = b.get(to.getx(), to.gety() + 1).getPiece();
                 b.get(to.getx(), to.gety() + 1).toEmpty();
             }
             special = true;
