@@ -77,6 +77,10 @@ class Move {
 		}
 	}
 
+	boolean isInverseOf(Move m2) {
+		return getFrom().getSymbol().equals(m2.getTo().getSymbol()) && getTo().getSymbol().equals(m2.getFrom().getSymbol());
+	}
+
 	boolean isSpecial() {
 		return special;
 	}
@@ -141,6 +145,7 @@ class Move {
         moving.setHasMoved(true);
         if (((Pawn) moving).canPromote(to)) {
             b.promote = to;
+            b.promotePawn(to, b.getOtherTurn(), "Q");
             // NEED SPECIAL HERE?
         }
         b.addMove(this);

@@ -171,11 +171,15 @@ class Bishop extends Piece {
                     dir++;
                 } else if (isLegal(s, to)) {
                     m = new Move(s, to, b);
-                    break;
+                    if (to.getPiece() instanceof Nopiece) {
+                        break;
+                    } else { 
+                        dir++; dir++;
+                        dist = 0;
+                        break;
+                    }
                 } else {
-                    dist = 1;
-                    dir++;
-                    dir++;
+                    dist++;
                 }
             }
         }

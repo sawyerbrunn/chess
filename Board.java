@@ -3,6 +3,7 @@ package chess;
 import java.util.*;
 import static chess.Piece.*;
 import java.util.Iterator;
+import java.io.*;
 
 class Board {
 
@@ -74,7 +75,7 @@ class Board {
 				//System.out.println(blackPieces.size());
 			}
 		}
-		doNoCheck = false;
+		doNoCheck = model.doNoCheck;
 		wking = model.wking;
 		bking = model.bking;
 		promote = model.promote;
@@ -88,6 +89,44 @@ class Board {
 			log.add(new Move(model.log.get(i), this));
 		}
 
+	}
+
+	void writeLog() {
+		try {
+			PrintWriter writer = new PrintWriter("chess/log.txt", "UTF-8");
+			for (int i = 0; i < log.size(); i++) {
+				writer.println(log.get(i).getSymbol());
+			}
+			writer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	void upload() {
+		try {
+			File f = new File("chess/log.txt");
+			Scanner s = new Scanner(f);
+			while (s.hasNextLine()) {
+				String move = s.nextLine();
+				String from = move.substring(0, 2).toUpperCase();
+				String to = move.substring(move.length() - 2, move.length()).toUpperCase();
+				int y1 = Integer.parseInt(from.substring(1)) - 1;
+				int y2 = Integer.parseInt(to.substring(1)) - 1;
+				int x1 = getCoord(from.charAt(0));
+				int x2 = getCoord(to.charAt(0));
+				Square s1 = get(x1, y1);
+				Square s2 = get(x2, y2);
+				Move m = new Move(s1, s2, this);
+				m.makeMove();
+				Square sq = askPromote();
+				if (sq != null) {
+					promotePawn(sq, getOtherTurn(), "Q");
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	Move getLastMove() {
@@ -107,6 +146,9 @@ class Board {
 
 	/** Undoes the last move made on this board */
 	void undo() {
+		/*if (log.size() == 0) {
+			return;
+		}*/
 		Move lastMove = new Move(log.get(log.size() - 1), this);
 		if (lastMove.isSpecial()) {
 			if (lastMove.moving() instanceof King) {
@@ -170,6 +212,14 @@ class Board {
 	String winner() {
 		if (whitePieces.size() == 1 && blackPieces.size() == 1) {
 			return "Draw";
+		}
+		if (log.size() >= 6) {
+			int s = log.size() - 1;
+			if (log.get(s).isInverseOf(log.get(s - 2)) && log.get(s - 1).isInverseOf(log.get(s - 3))) {
+				if (log.get(s).getSymbol().equals(log.get(s-4).getSymbol()) && log.get(s-1).getSymbol().equals(log.get(s-5).getSymbol())) {
+					return "Draw rep";
+				}
+			}
 		}
 		Iterator<Move> currentMoves = allMoves();
 		if (!currentMoves.hasNext()) {
@@ -337,6 +387,7 @@ class Board {
 		}
 		//System.out.println("Check");
 		Board b = new Board(this);
+		b.doNoCheck = false;
 		Piece p = b.get(from.getx(), from.gety()).getPiece();
 		//b.get(from.getx(), from.gety()).empty();
 		//b.put(to.getx(), to.gety(), p);
@@ -351,7 +402,7 @@ class Board {
 		}
 		//System.out.println("Printing copied board:");
 		//System.out.println(b.toString());
-		if (b.getTurn() == "White") {
+		if (b.getTurn().equals("White")) {
 			for (int i = 0; i < b.blackPieces.size(); i++) {
 				if (b.blackPieces.get(i).attacks(b.wking)) {
 					//System.out.println("This move would place White in check.");
@@ -405,6 +456,26 @@ class Board {
 
 	int getBlackMoves() {
 		return blackMoves;
+	}
+
+	static int getCoord(char c) {
+		if (c == 'A') {
+			return 0;
+		} else if (c == 'B') {
+			return 1;
+		} else if (c == 'C') {
+			return 2;
+		} else if (c == 'D') {
+			return 3;
+		} else if (c == 'E') {
+			return 4;
+		} else if (c == 'F') {
+			return 5;
+		} else if (c == 'G') {
+			return 6;
+		} else {
+			return 7;
+		}
 	}
 
 
@@ -512,6 +583,8 @@ class Board {
     			m = curr.next();
     		}
     	}
+
+
 
 
 
