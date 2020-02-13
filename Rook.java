@@ -175,7 +175,7 @@ class Rook extends Piece {
                     dir++;
                 } else if (isLegal(s, to)) {
                     m = new Move(s, to, b);
-                    if (to.getPiece() instanceof Nopiece) {
+                    if (to.getPiece() instanceof Nopiece || dir == 6) {
                         break;
                     } else { 
                         dir++; dir++;

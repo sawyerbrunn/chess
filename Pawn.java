@@ -234,6 +234,7 @@ class Pawn extends Piece {
 
         void toNext() {
             dir++;
+            //System.out.println(dir);
             if (doub && dir == 6) {
                 toNext();
                 return;
@@ -247,13 +248,19 @@ class Pawn extends Piece {
                 } else {
                     to = s.getDir(dir, 1);
                 }
+                if (to != null) {
+                    //System.out.println(to.getSymbol());
+                    //System.out.println(isLegal(s, to));
+                } else {
+                    //System.out.println(to);
+                }
                 if (to == null) {
                     dir++;
                 } else if (isLegal(s, to)) {
                     if (dir == 6 && !doub) {
                         doub = true;
                         m = new Move(s, to, b);
-                    } else if (!doub) {
+                    } else if (!doub || dir == 7) {
                         m = new Move(s, to, b);
                     }
                     //System.out.println("New move:");

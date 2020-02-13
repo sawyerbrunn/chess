@@ -200,17 +200,22 @@ class Queen extends Piece {
             dist++;
             while (hasNext()) {
                 Square to = s.getDir(dir, dist);
+                //System.out.println(dist);
+                //System.out.println(dir);
+                //System.out.println((to == null) ? to : to.getSymbol());
+                //System.out.println((to == null) ? null : isLegal(s, to));
+                //System.out.println();
                 if (to == null) {
                     dist = 1;
                     dir++;
                 } else if (isLegal(s, to)) {
                     m = new Move(s, to, b);
-                    if (to.getPiece() instanceof Nopiece) {
-                        break;
+                    if (to.getPiece() instanceof Nopiece || dir == 7) {
+                        return;
                     } else { 
                         dir++;
                         dist = 0;
-                        break;
+                        return;
                     }
                 } else {
                     dist++;
