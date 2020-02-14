@@ -26,14 +26,14 @@ class AIPlayer2 extends Player {
 		Move making = new Move(found, b);
 		System.out.println(making.getSymbol());
 		if (!making.makeMove()) {
-			System.out.println("uh oh");
-			System.out.println(b.toString());
-			System.out.println(making.getSymbol());
-			System.out.println(color);
-			System.out.println(b.getTurn());
+			//System.out.println("uh oh");
+			//System.out.println(b.toString());
+			//System.out.println(making.getSymbol());
+			//System.out.println(color);
+			//System.out.println(b.getTurn());
 			Iterator<Move> it = b.allMoves();
 			while (it.hasNext()) {
-				System.out.println(it.next().getSymbol());
+				//System.out.println(it.next().getSymbol());
 			}
 			System.exit(1);
 		}
@@ -50,9 +50,11 @@ class AIPlayer2 extends Player {
 			Iterator<Move> it = brd.allMoves();
 			List<Move> uglyMoves = new ArrayList<Move>();
 			while (it.hasNext()) { uglyMoves.add(it.next()); }
-			double bestMove = -INFY;
-			Move bestMoveFound = null;
+			double bestMove = (brd.winner() == null) ? -INFY : -score(brd);
+			Move bestMoveFound = (uglyMoves.size() == 0) ? null : uglyMoves.get(0);
 			int count = 0;
+			//System.out.println(brd.toString());
+			//System.out.println(uglyMoves.size());
 			for(Move m : uglyMoves) {
 				if(m.makeMove()) {
 					Square sq = brd.askPromote();
@@ -66,6 +68,7 @@ class AIPlayer2 extends Player {
 					brd.undo();
 				
 				//System.out.println("Should not be changing: ");
+					//System.out.println(value);
 					if (value >= bestMove) {
 						if (value == bestMove) {
 							count++;
@@ -81,14 +84,15 @@ class AIPlayer2 extends Player {
 					}
 				}
 			}
-			System.out.print("Best score: "); System.out.println(bestMove);
+			//System.out.println(bestMoveFound.getSymbol());
+			System.out.print("Board Score: "); System.out.println(bestMove);
 			return bestMoveFound;
 		} else {
 			Iterator<Move> it = brd.allMoves();
 			List<Move> uglyMoves = new ArrayList<Move>();
 			while (it.hasNext()) { uglyMoves.add(it.next()); }
-			double bestMove = INFY;
-			Move bestMoveFound = null;
+			double bestMove = (brd.winner() == null) ? INFY : -score(brd);
+			Move bestMoveFound = (uglyMoves.size() == 0) ? null : uglyMoves.get(0);
 			for(Move m : uglyMoves) {
 				if(m.makeMove()) {
 					Square sq = brd.askPromote();
@@ -96,6 +100,8 @@ class AIPlayer2 extends Player {
 						brd.promotePawn(sq, "Black", "Q");
 					}
 					double value = minimax(depth - 1, brd, -INFY, INFY, !isMaximisingPlayer);
+					//System.out.println("Move and score:");
+					//System.out.println(m.getSymbol());
 					brd.undo();
 				//System.out.println("Should not be changing: ");
 					if (value <= bestMove) {
@@ -104,7 +110,7 @@ class AIPlayer2 extends Player {
 					}
 				}
 			}
-			System.out.print("Best score: "); System.out.println(bestMove);
+			System.out.print("Board Score: "); System.out.println(bestMove);
 			return bestMoveFound;
 		}
 	}
@@ -119,6 +125,10 @@ class AIPlayer2 extends Player {
 
 	double minimax(int depth, Board brd, double alpha, double beta, boolean isMaximisingPlayer) {
 		if (depth == 0) {
+			if (brd.winner() != null) {
+				//System.out.println(brd.winner());
+				//System.out.println(score(brd));
+			}
 			return score(brd);
 		}
 		brd = new Board(brd);
@@ -127,7 +137,7 @@ class AIPlayer2 extends Player {
 		List<Move> uglyMoves = new ArrayList<Move>();
 		while (it.hasNext()) { uglyMoves.add(it.next()); }
 		if (isMaximisingPlayer) {
-			double bestMove = -INFY;
+			double bestMove = (brd.winner() == null) ? -INFY : -score(brd);
 	        for (Move m : uglyMoves) {
 	            if (m.makeMove()) {
 	            	Square sq = brd.askPromote();
@@ -144,7 +154,7 @@ class AIPlayer2 extends Player {
 	        }
 	        return bestMove;
 		} else {
-			double bestMove = INFY;
+			double bestMove = (brd.winner() == null) ? INFY : -score(brd);
 	        for (Move m : uglyMoves) {
 	            if (m.makeMove()) {
 	            	Square sq = brd.askPromote();
@@ -233,7 +243,7 @@ class AIPlayer2 extends Player {
 
 	/* Scores the Board b heuristically */
 	double score(Board brd) {
-			List<Piece> whitePieces = brd.whitePieces;
+		List<Piece> whitePieces = brd.whitePieces;
 		List<Piece> blackPieces = brd.blackPieces;
 		
 		String winner = brd.winner();
@@ -242,8 +252,6 @@ class AIPlayer2 extends Player {
 				return -INFY - 1;
 			} else if (winner.equals("Black")) {
 				return INFY + 1;
-			} else {
-				return 0;
 			}
 		}
 		return count(whitePieces) + count(blackPieces);
