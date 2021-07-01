@@ -2,6 +2,8 @@
 Chess Game w/ self-playing AI
 Project By: Sawyer Brunn
 
+Overview & Instructions Doc: https://docs.google.com/document/d/1ovEn4o0pdNsz6wsmffoSDQM0pji1mFQ64DWH5W6NCqA/edit?usp=sharing
+
 Description: Chess Engine runnable in a GUI with several levels of chess agents capable of making rational, human-like decisions.
 The three levels of agents are as follows:
 
@@ -12,4 +14,4 @@ assuming opponent plays optimally. Can find guaranteed wins within 3 moves.
 
 Game can be run by running java Chess/main from the directory containing the decompressed chess folder. GUI controls can be found at the top drop down menu.
 
-Updated: 5/22/2021
+Updated: 6/22/2021
